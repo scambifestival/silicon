@@ -1,7 +1,7 @@
 ## dnsmasq
 
 Software leggero che può fare sia da DNS server/cache sia da DHCP.  
-Nella LAN virtuale si usa solo la parte DNS, per risolvere i nomi interni con dominio di primo livello .scambi (non è un Top-Level Domain)
+Nella LAN virtuale si usa solo la parte DNS, per risolvere i nomi interni con dominio di primo livello *.scambi* (non è un Top-Level Domain)
 
 Questo documento è per gli host "normali".
 

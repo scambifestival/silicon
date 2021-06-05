@@ -2,7 +2,7 @@
 
 Host con Debian 10, openvpn e dnsmasq primari.
 
-I record per LAN Virtuale utilizzano livello *.scambi*  
+I record per LAN Virtuale utilizzano il dominio di primo livello *.scambi*  
 file /etc/dnsmasq.d/dnsmasq.hosts, esempi:
 
     192.168.64.1    pila1sca.scambi
@@ -315,6 +315,8 @@ applicare regole firewall con firewalld
 >update-alternatives --config iptables (mettere legacy)
 
 >apt install firewalld
+
+verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga qui sotto
 
 >firewall-cmd --state  
 >firewall-cmd --permanent --zone=public --add-interface=eth0  

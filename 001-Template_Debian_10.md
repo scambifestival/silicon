@@ -46,6 +46,8 @@ applicare regole firewall con firewalld
 
 >apt install firewalld
 
+verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga qui sotto
+
 >firewall-cmd --state  
 >firewall-cmd --permanent --zone=public --add-interface=eth0  
 >firewall-cmd --permanent --zone=internal --add-interface=scambi  
