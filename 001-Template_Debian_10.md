@@ -40,6 +40,17 @@ dopo aver installato e configurato [tinc](002-Tinc_VPN.md)
 - installare e configurare [dnsmasq](003-dnsmasq.md) che ascolti solo in localhost <br/>
 - aggiungere 127.0.0.1 in testa al file /etc/resolv.conf
 
+configurazione snmp
+>apt install snmpd snmp libsnmp-dev  
+>mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.bkp  
+>systemctl stop snmpd  
+>net-snmp-create-v3-user -ro -A Mon1tor_P4ss -a SHA -X Mon1tor_P4ss -x AES monitor  
+
+>nano /etc/snmp/snmpd.conf  
+
+    agentAddress udp:161
+>systemctl restart snmpd
+
 applicare regole firewall con firewalld
 >update-alternatives --config ip6tables (mettere legacy)  
 >update-alternatives --config iptables (mettere legacy)

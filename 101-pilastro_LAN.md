@@ -379,3 +379,28 @@ configurazione fail2ban
     blocktype = DROP
 
 >systemctl restart fail2ban
+
+<br/> **prontuario comandi per certificati VPN**
+
+###### creare utente
+>./easyrsa gen-req client-USERNAME nopass  
+
+oppure con password
+
+>./easyrsa gen-req client-USERNAME
+
+firmare il certificato (la password è quella della CA)
+>./easyrsa sign-req client client-USERNAME
+
+per creare file .ovpn, usare "ovpngen" (vedi https://github.com/graysky2/ovpngen)
+
+modificare ovpngen togliendo commento a "cipher" e "auth" (righe 69-70)
+
+>/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > client-USERNAME.ovpn
+
+###### rinnovare utente
+
+firmare il certificato (la password è quella della CA)
+>./easyrsa sign-req client client-USERNAME
+
+>/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > client-USERNAME.ovpn

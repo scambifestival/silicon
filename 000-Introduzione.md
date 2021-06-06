@@ -22,5 +22,6 @@ Di seguito l’elenco dei server ordinati per IP "interni" (TINC)
 | --- | --- | --- | --- | --- |
 | 192.168.64.1 | pila1sca | 822 | vpn1 |  |
 | 192.168.64.2 | pila2xyz | 822 | vpn2 |  |
-| 192.168.64.3 | lemp1sca | 822 | LEMP scambi.org |  |
-| 192.168.64.4 | lamp1con | 822 | LAMP nextcloud |  |
+| 192.168.64.3 | bckp1t4v | 822 | backup |  |
+| 192.168.64.4 | lemp1sca | 822 | LEMP scambi.org |  |
+| 192.168.64.5 | lamp1con | 822 | LAMP nextcloud |  |
