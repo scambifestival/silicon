@@ -8,25 +8,20 @@ installazione pacchetti utili
 >apt install screen git gnupg rsync
 
 installazione prerequisiti
->apt install apache2 python3-certbot-apache mariadb-server
+>apt install apache2 python3-certbot-apache postgresql postgresql-client
 
-configurazione mariadb
->mysql_secure_installation  (vedi Keepass)
+configurazione postgresql
+>sudo -u postgres psql  
+>>CREATE USER nuvola WITH CREATEDB PASSWORD 'VEDI-KEEPASS!';  
+>>\q
 
->mysql -u root -p
-
-    CREATE DATABASE nuvola DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-    CREATE USER nuvola@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
-    GRANT ALL PRIVILEGES ON nuvola.* TO nuvola@localhost;
-    FLUSH PRIVILEGES;
-    exit
 
 installazione php 7.4
 >wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add -  
 >echo "deb https://packages.sury.org/php/ buster main" | tee /etc/apt/sources.list.d/php.list  
 
 >apt update  
->apt install php7.4-fpm php7.4-xml php7.4-cli php7.4-cgi php7.4-mysql php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-json php7.4-common php7.4-intl php7.4-bz2 php7.4-gmp php7.4-bcmath php-pear php-imagick  
+>apt install php7.4-fpm php7.4-xml php7.4-cli php7.4-cgi php7.4-pgsql php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-json php7.4-common php7.4-intl php7.4-bz2 php7.4-gmp php7.4-bcmath php-pear php-imagick  
 
 configurazione php
 >nano /etc/php/7.4/fpm/php.ini

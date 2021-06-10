@@ -18,10 +18,18 @@ La naming convention per gli hostname è la seguente:
 
 Di seguito l’elenco dei server ordinati per IP "interni" (TINC)
 
-| IP TINC | hostname | ssh | ruolo | IP pubblico |
+| IP TINC | hostname | ssh * | ruolo | IP pubblico |
 | --- | --- | --- | --- | --- |
-| 192.168.64.1 | pila1sca | 822 | vpn1 |  |
-| 192.168.64.2 | pila2xyz | 822 | vpn2 |  |
+| 192.168.64.1 | pila1het | 822 | vpn1 |  |
+| 192.168.64.2 | pila2sca | 822 | vpn2 |  |
 | 192.168.64.3 | bckp1t4v | 822 | backup |  |
-| 192.168.64.4 | lemp1sca | 822 | LEMP scambi.org |  |
-| 192.168.64.5 | lamp1con | 822 | LAMP nextcloud |  |
+| 192.168.64.4 | lemp1sca | 22 | LEMP scambi.org |  |
+| 192.168.64.5 | lamp1con | 22 | LAMP nextcloud |  |
+
+\* 822 - ssh internet | 22 - ssh LAN
+
+Elenco fornitori  
+- het - hetzner
+- sca - scaleway
+- t4v - time4vps
+- con - contabo

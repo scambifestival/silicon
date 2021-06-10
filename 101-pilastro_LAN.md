@@ -5,8 +5,8 @@ Host con Debian 10, openvpn e dnsmasq primari.
 I record per LAN Virtuale utilizzano il dominio di primo livello *.scambi*  
 file /etc/dnsmasq.d/dnsmasq.hosts, esempi:
 
-    192.168.64.1    pila1sca.scambi
-    192.168.64.2    pila2xyz.scambi
+    192.168.64.1    pila1het.scambi
+    192.168.64.2    pila2sca.scambi
 
 <br/> **procedura**
 
@@ -54,8 +54,8 @@ configurazione certification authority per openvpn
     set_var EASYRSA_PKI             "$PWD/pki"
     set_var EASYRSA_DN              "org"
     set_var EASYRSA_REQ_COUNTRY     "IT"
-    set_var EASYRSA_REQ_PROVINCE    "Genoa"
-    set_var EASYRSA_REQ_CITY        "Genoa"
+    set_var EASYRSA_REQ_PROVINCE    "IM"
+    set_var EASYRSA_REQ_CITY        "Sanremo"
     set_var EASYRSA_REQ_ORG         "scambi"
     set_var EASYRSA_REQ_EMAIL       "info@scambi.org"
     set_var EASYRSA_REQ_OU          "Staff"
