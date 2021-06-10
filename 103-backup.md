@@ -18,4 +18,4 @@ configurazione cartelle
 >mkdir -p /data/"hostname"/{backup,borg,log}
 
 esempio:
->mkdir -p /data/{pila1sca,lemp1sca,lamp1con}/{backup,borg,log}
+>mkdir -p /data/{pila1het,lemp1sca,lamp1con}/{backup,borg,log}
