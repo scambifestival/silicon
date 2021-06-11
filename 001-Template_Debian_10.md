@@ -34,7 +34,7 @@ modifica configurazione ssh
     PermitRootLogin without-password
 
 creare utente di servizio
->adduser service (vedi Keepass)
+>adduser silicon (vedi Keepass)
 
 dopo aver installato e configurato [tinc](002-Tinc_VPN.md)
 - installare e configurare [dnsmasq](003-dnsmasq.md) che ascolti solo in localhost <br/>

@@ -40,7 +40,7 @@ modifica configurazione ssh
     PermitRootLogin without-password
 
 creare utente di servizio
->adduser service (vedi Keepass)
+>adduser silicon (vedi Keepass)
 
 configurazione certification authority per openvpn
 >apt install openvpn easy-rsa  
@@ -104,7 +104,7 @@ generare il certificato CRL (sia la prima volta, sia dopo aver aggiunto revoche)
 
 per creare file .ovpn, usare "ovpngen" (vedi https://github.com/graysky2/ovpngen)
 
->/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > client-USERNAME.ovpn
+>/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > /home/silicon/client-USERNAME.ovpn
 
 modificare client-USERNAME.ovpn togliendo commento a "cipher" e "auth"
 
@@ -178,7 +178,7 @@ installazione e configurazione tinc
 
 >nano scambi/tinc.conf
 
-    Name=pila1sca
+    Name=pila1het
     Device=/dev/net/tun
     AddressFamily=ipv4
     Mode=switch
@@ -205,7 +205,7 @@ installazione e configurazione tinc
 
 >tincd -n scambi -K 4096
 
->nano scambi/hosts/pilla01het
+>nano scambi/hosts/pila1het
 
     Subnet = 192.168.64.1/32
     Address = vpn1.scambi.org
@@ -396,11 +396,11 @@ per creare file .ovpn, usare "ovpngen" (vedi https://github.com/graysky2/ovpngen
 
 modificare ovpngen togliendo commento a "cipher" e "auth" (righe 69-70)
 
->/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > client-USERNAME.ovpn
+>/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > /home/silicon/client-USERNAME.ovpn
 
 ###### rinnovare utente
 
 firmare il certificato (la password è quella della CA)
 >./easyrsa sign-req client client-USERNAME
 
->/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > client-USERNAME.ovpn
+>/root/ovpngen vpn1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 6990 udp > /home/silicon/client-USERNAME.ovpn
