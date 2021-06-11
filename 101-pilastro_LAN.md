@@ -380,6 +380,17 @@ configurazione fail2ban
 
 >systemctl restart fail2ban
 
+configurazione snmp
+>apt install snmpd snmp libsnmp-dev  
+>mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.bkp  
+>systemctl stop snmpd  
+>net-snmp-create-v3-user -ro -A Mon1tor_P4ss -a SHA -X Mon1tor_P4ss -x AES monitor  
+
+>nano /etc/snmp/snmpd.conf  
+
+    agentAddress udp:161
+>systemctl restart snmpd
+
 <br/> **prontuario comandi per certificati VPN**
 
 ###### creare utente
