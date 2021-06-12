@@ -52,7 +52,7 @@ configurazione agente zabbix
     server active = zabbix.scambi  
     hostname =
 
->systemctl restart zabbix-agent
+>systemctl enable --now zabbix-agent
 
 applicare regole firewall con firewalld
 >update-alternatives --config ip6tables (mettere legacy)  
