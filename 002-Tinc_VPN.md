@@ -28,7 +28,7 @@ Questo documento è per gli host "normali".
     Digest=SHA512
 
     ConnectTo=pila1het
-    #ConnectTo=pila2xyz
+    #ConnectTo=pila2sca
 
 >nano scambi/tinc-up
 
@@ -68,22 +68,22 @@ copiare scambi/hosts/pila1het su questo host
 
 >chmod +x scambi/hosts/pila1het-*
 
-copiare scambi/hosts/”nome host” su pila2xyz  
-copiare scambi/hosts/pila2xyz su questo host
+copiare scambi/hosts/”nome host” su pila2sca  
+copiare scambi/hosts/pila2sca su questo host
 
->nano scambi/hosts/pila2xyz-up
+>nano scambi/hosts/pila2sca-up
 
     #!/bin/sh
     ip route add 192.168.64.2 dev $INTERFACE
     ip route add 192.168.68.0/24 via 192.168.64.2 dev $INTERFACE
 
->nano scambi/hosts/pila2xyz-down
+>nano scambi/hosts/pila2sca-down
 
     #!/bin/sh
     ip route del 192.168.68.0/24 via 192.168.64.2 dev $INTERFACE
     ip route del 192.168.64.2 dev $INTERFACE
 
->chmod +x scambi/hosts/pila2xyz-*
+>chmod +x scambi/hosts/pila2sca-*
 
 
 <br/> abilitare e far partire il servizio

@@ -40,16 +40,19 @@ dopo aver installato e configurato [tinc](002-Tinc_VPN.md)
 - installare e configurare [dnsmasq](003-dnsmasq.md) che ascolti solo in localhost <br/>
 - aggiungere 127.0.0.1 in testa al file /etc/resolv.conf
 
-configurazione snmp
->apt install snmpd snmp libsnmp-dev  
->mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.bkp  
->systemctl stop snmpd  
->net-snmp-create-v3-user -ro -A Mon1tor_P4ss -a SHA -X Mon1tor_P4ss -x AES monitor  
+configurazione agente zabbix
+>wget https://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-1+buster_all.deb  
+>dpkg -i zabbix-release_5.0-1+buster_all.deb  
+>apt update  
+>apt install zabbix-agent  
 
->nano /etc/snmp/snmpd.conf  
+>nano /etc/zabbix/zabbix_agentd.conf
 
-    agentAddress udp:161
->systemctl restart snmpd
+    server = zabbix.scambi  
+    server active = zabbix.scambi  
+    hostname =
+
+>systemctl restart zabbix-agent
 
 applicare regole firewall con firewalld
 >update-alternatives --config ip6tables (mettere legacy)  
@@ -71,7 +74,7 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 >firewall-cmd --zone=public --permanent --remove-service=ssh  
 >firewall-cmd --zone=internal --permanent --remove-service={mdns,samba-client}  
 
->firewall-cmd --permanent --zone=internal --add-service={ssh,snmp}  
+>firewall-cmd --permanent --zone=internal --add-service={ssh,zabbix-agent}  
 >firewall-cmd --permanent --zone=public --add-service=aa_tinc  
 
 >firewall-cmd --permanent --zone=public --set-target=DROP  

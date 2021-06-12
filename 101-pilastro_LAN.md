@@ -187,7 +187,7 @@ installazione e configurazione tinc
     Cipher=aes-256-cbc
     Digest=SHA512
 
-    #ConnectTo=pila2xyz
+    #ConnectTo=pila2sca
 
 >nano scambi/tinc-up
 
@@ -300,9 +300,9 @@ sul primario occorre impostare un cron job per replicare il file */etc/dnsmasq.d
 >nano /root/sync_dnsmasq.sh
 
     #!/bin/bash
-    /usr/bin/scp -p -q -P822 /etc/dnsmasq.d/dnsmasq.hosts pila2xyz.scambi:/etc/dnsmasq.d/dnsmasq.hosts
+    /usr/bin/scp -p -q -P822 /etc/dnsmasq.d/dnsmasq.hosts pila2sca.scambi:/etc/dnsmasq.d/dnsmasq.hosts
     sleep 1
-    /usr/bin/ssh -p822 pila2xyz.scambi systemctl restart dnsmasq
+    /usr/bin/ssh -p822 pila2sca.scambi systemctl restart dnsmasq
 
 >crontab -e
 
@@ -379,17 +379,6 @@ configurazione fail2ban
     blocktype = DROP
 
 >systemctl restart fail2ban
-
-configurazione snmp
->apt install snmpd snmp libsnmp-dev  
->mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.bkp  
->systemctl stop snmpd  
->net-snmp-create-v3-user -ro -A Mon1tor_P4ss -a SHA -X Mon1tor_P4ss -x AES monitor  
-
->nano /etc/snmp/snmpd.conf  
-
-    agentAddress udp:161
->systemctl restart snmpd
 
 <br/> **prontuario comandi per certificati VPN**
 

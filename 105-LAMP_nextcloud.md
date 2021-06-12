@@ -15,7 +15,6 @@ configurazione postgresql
 >>CREATE USER nuvola WITH CREATEDB PASSWORD 'VEDI-KEEPASS!';  
 >>\q
 
-
 installazione php 7.4
 >wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add -  
 >echo "deb https://packages.sury.org/php/ buster main" | tee /etc/apt/sources.list.d/php.list  
