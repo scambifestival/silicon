@@ -58,12 +58,12 @@ copiare scambi/hosts/pila1het su questo host
 
     #!/bin/sh
     ip route add 192.168.64.1 dev $INTERFACE
-    ip route add 192.168.66.0/24 via 192.68.64.1 dev $INTERFACE
+    ip route add 192.168.66.0/24 via 192.168.64.1 dev $INTERFACE
 
 >nano scambi/hosts/pila1het-down
 
     #!/bin/sh
-    ip route del 192.168.66.0/24 via 192.68.64.1 dev $INTERFACE
+    ip route del 192.168.66.0/24 via 192.168.64.1 dev $INTERFACE
     ip route del 192.68.64.1 dev $INTERFACE
 
 >chmod +x scambi/hosts/pila1het-*

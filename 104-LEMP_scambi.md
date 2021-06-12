@@ -15,11 +15,26 @@ configurazione mariadb
 
 >mysql -u root -p
 
-    CREATE DATABASE scambiorg DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-    CREATE USER scambiorg@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
-    GRANT ALL PRIVILEGES ON scambiorg.* TO scambiorg@localhost;
+    CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+    CREATE USER wpuser@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
+    GRANT ALL PRIVILEGES ON wordpress.* TO wpuser@localhost;
     FLUSH PRIVILEGES;
     exit
+
+tuning mariadb
+>nano /etc/mysql/conf.d/zz_performance.cnf  
+
+    [mysqld]
+    performance_schema = on
+
+    [server]
+    max_connections = 16
+    innodb_buffer_pool_instances = 1
+
+    innodb_log_file_size = 8M
+    innodb_buffer_pool_size = 64M
+
+>systemctl restart mariadb
 
 installazione php 7.4
 >wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add -  
@@ -80,7 +95,8 @@ configurazione nginx
 >rm /etc/nginx/sites-enabled/default  
 >ln -s /etc/nginx/sites-available/scambiorg /etc/nginx/sites-enabled/
 
->mkdir /var/www/scambiorg
+>mkdir /var/www/scambiorg  
+>chown www-data:www-data /var/www/scambiorg  
 
 >systemctl restart nginx
 

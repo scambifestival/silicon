@@ -56,6 +56,9 @@ cambiare password user Admin
 
 clonare il template "Template OS Linux by Zabbix agent" chiamandolo "AA_template_base"  
 
+abilitare notifiche (dopo aver fatto procedura per bot Telegram)
+>Configuration > Actions > Report problems to Zabbix administrators	> Enabled
+
 per inserire un nuovo host a monitoraggio
 >Configuration > Hosts > Create host  
 <br/>inserire hostname  
