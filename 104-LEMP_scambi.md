@@ -179,6 +179,8 @@ configurazione borg
     export BORG_PASSPHRASE=""
     exit 0
 
+>mkdir /var/local/backup/backup_log  
+
 >crontab -e
 
     00 04 * * * /bin/bash /var/local/backup/backup_script.sh
