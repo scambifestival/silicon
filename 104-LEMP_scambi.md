@@ -96,7 +96,9 @@ configurazione nginx
 >ln -s /etc/nginx/sites-available/scambiorg /etc/nginx/sites-enabled/
 
 >mkdir /var/www/scambiorg  
->chown www-data:www-data /var/www/scambiorg  
+>chown -R silicon:www-data /var/www/scambiorg  
+>find /var/www/scambiorg -type d -exec chmod 2775 {} \\;  <br>
+>find /var/www/scambiorg -type f -exec chmod 664 {} \\;   
 
 >systemctl restart nginx
 
