@@ -20,7 +20,7 @@ installazione php 7.4
 >echo "deb https://packages.sury.org/php/ buster main" | tee /etc/apt/sources.list.d/php.list  
 
 >apt update  
->apt install php7.4-fpm php7.4-xml php7.4-cli php7.4-cgi php7.4-pgsql php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-json php7.4-common php7.4-intl php7.4-bz2 php7.4-gmp php7.4-bcmath php7.4-apcu php-pear php7.4-imagick libmagickcore-6.q16-6-extra  
+>apt install php7.4-fpm php7.4-xml php7.4-cli php7.4-cgi php7.4-pgsql php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-json php7.4-common php7.4-intl php7.4-bz2 php7.4-gmp php7.4-bcmath php7.4-apcu php-pear php7.4-ldap php7.4-imagick libmagickcore-6.q16-6-extra  
 
 configurazione php
 >nano /etc/php/7.4/fpm/php.ini
@@ -30,6 +30,13 @@ configurazione php
     memory_limit = 1024M
 
     upload_max_filesize = 513M
+
+>nano /etc/php/7.4/fpm/pool.d/www.conf
+
+    pm.max_children = 120
+    pm.start_servers = 12
+    pm.min_spare_servers = 6
+    pm.max_spare_servers = 18
 
 >systemctl restart php7.4-fpm
 

@@ -48,6 +48,10 @@ configurazione php
 
     date.timezone = Europe/Rome
 
+>nano /etc/php/7.4/fpm/pool.d/www.conf
+
+    pm.max_children = 8
+
 >systemctl restart php7.4-fpm
 
 configurare firewall
