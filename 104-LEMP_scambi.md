@@ -41,19 +41,27 @@ installazione php 7.4
 >echo "deb https://packages.sury.org/php/ buster main" | tee /etc/apt/sources.list.d/php.list  
 
 >apt update  
->apt install php7.4-fpm php7.4-xml php7.4-cli php7.4-cgi php7.4-mysql php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-json php7.4-common php7.4-intl php7.4-bz2 php7.4-gmp php7.4-bcmath php-pear php-imagick  
+>apt install php7.4-fpm php7.4-xml php7.4-cli php7.4-cgi php7.4-mysql php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-json php7.4-common php7.4-intl php7.4-bz2 php7.4-gmp php7.4-bcmath php7.4-opcache php-pear php-imagick  
 
 configurazione php
 >nano /etc/php/7.4/fpm/php.ini
 
     date.timezone = Europe/Rome
 
+    opcache.enable=1
+    opcache.fast_shutdown=1
+    opcache.interned_strings_buffer=8
+    opcache.max_accelerated_files=4000
+    opcache.memory_consumption=64
+    opcache.revalidate_freq=60
+    opcache.validate_timestamps=1
+
 >nano /etc/php/7.4/fpm/pool.d/www.conf
 
-    pm.max_children = 16
+    pm.max_children = 10
     pm.start_servers = 4
     pm.min_spare_servers = 2
-    pm.max_spare_servers = 8
+    pm.max_spare_servers = 6
 
 >systemctl restart php7.4-fpm
 
