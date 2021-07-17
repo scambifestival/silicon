@@ -148,11 +148,11 @@ configurazione borg
 
     #!/bin/bash
 
-    /usr/bin/rsync -a -R /./etc/nginx/sites-* /var/local/backup/raw/files/ 2>&1
+    /usr/bin/rsync -a --delete -R /./etc/nginx/sites-* /var/local/backup/raw/files/ 2>&1
 
     sleep 1
 
-    /usr/bin/rsync -a -R /./var/www/scambiorg/ /var/local/backup/raw/files/ 2>&1
+    /usr/bin/rsync -a --delete -R /./var/www/scambiorg/ /var/local/backup/raw/files/ 2>&1
 
     sleep 1
 

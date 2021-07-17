@@ -137,7 +137,7 @@ configurazione borg
 
     sleep 60
 
-    /usr/bin/rsync -a -R /./etc/apache2/sites-* /var/local/backup/raw/files/ 2>&1
+    /usr/bin/rsync -a --delete -R /./etc/apache2/sites-* /var/local/backup/raw/files/ 2>&1
 
     sleep 1
 
