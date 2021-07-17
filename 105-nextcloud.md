@@ -31,12 +31,23 @@ configurazione php
 
     upload_max_filesize = 513M
 
+    opcache.enable=1
+    opcache.interned_strings_buffer=8
+    opcache.max_accelerated_files=10000
+    opcache.memory_consumption=128
+    opcache.save_comments=1
+    opcache.revalidate_freq=1
+
 >nano /etc/php/7.4/fpm/pool.d/www.conf
 
     pm.max_children = 120
     pm.start_servers = 12
     pm.min_spare_servers = 6
     pm.max_spare_servers = 18
+
+>nano /etc/php/7.4/mods-available/apcu.ini
+
+    apc.enable_cli=1
 
 >systemctl restart php7.4-fpm
 

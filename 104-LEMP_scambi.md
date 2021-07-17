@@ -50,7 +50,10 @@ configurazione php
 
 >nano /etc/php/7.4/fpm/pool.d/www.conf
 
-    pm.max_children = 8
+    pm.max_children = 16
+    pm.start_servers = 4
+    pm.min_spare_servers = 2
+    pm.max_spare_servers = 8
 
 >systemctl restart php7.4-fpm
 
