@@ -152,7 +152,7 @@ configurazione borg
 
     sleep 1
 
-    /usr/bin/rsync -a --delete -R /./var/www/scambiorg/ /var/local/backup/raw/files/ 2>&1
+    /usr/bin/rsync -a --delete -R /./var/www/ /var/local/backup/raw/files/ 2>&1
 
     sleep 1
 
@@ -201,3 +201,70 @@ configurazione borg
 >crontab -e
 
     00 04 * * * /bin/bash /var/local/backup/backup_script.sh
+
+
+### prenota.scambi.org
+
+>mysql -u root -p
+
+    CREATE DATABASE prenota DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+    CREATE USER prenota@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
+    GRANT ALL PRIVILEGES ON prenota.* TO prenota@localhost;
+    FLUSH PRIVILEGES;
+    exit
+
+
+>nano /etc/nginx/sites-available/prenota
+
+    server {
+        listen 80;
+        listen [::]:80;
+        server_name prenota.scambi.org;
+        root /var/www/prenota;
+
+        access_log /var/log/nginx/prenota-access.log;
+        error_log /var/log/nginx/prenota-error.log;
+
+        location / {
+            try_files $uri $uri/ /index.php?args;
+            index index.php index.html;
+        }
+
+        location ~ \.php$ {
+            try_files $uri =404;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        }
+
+    }
+
+
+>ln -s /etc/nginx/sites-available/prenota /etc/nginx/sites-enabled/
+
+>mkdir /var/www/prenota  
+>chown -R silicon:www-data /var/www/prenota  
+>chmod 2755 /var/www/prenota  
+
+>systemctl restart nginx
+
+>certbot --nginx -d prenota.scambi.org
+
+modificare file configurazione per TLS  
+>nano /etc/nginx/sites-available/prenota
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+    add_header Strict-Transport-Security "max-age=31536000";
+
+>systemctl restart nginx
+
+modifiche wordpress
+>find /var/www/prenota -type d -exec chmod 2775 {} \\;  <br>
+>find /var/www/prenota -type f -exec chmod 664 {} \\;
+
+>nano /var/www/prenota/wp-config.php  
+
+    define('FS_METHOD', 'direct');
+    define('FS_CHMOD_DIR', 0755);
+    define('FS_CHMOD_FILE', 0644);
