@@ -48,6 +48,10 @@ configurazione php
 
     date.timezone = Europe/Rome
 
+    post_max_size = 10M
+
+    upload_max_filesize = 8M
+
     opcache.enable=1
     opcache.fast_shutdown=1
     opcache.interned_strings_buffer=8
@@ -88,6 +92,8 @@ configurazione nginx
         listen [::]:80;
         server_name scambi.org;
         root /var/www/scambiorg;
+
+        client_max_body_size 8M;
 
         access_log /var/log/nginx/scambiorg-access.log;
         error_log /var/log/nginx/scambiorg-error.log;
@@ -221,6 +227,8 @@ configurazione borg
         listen [::]:80;
         server_name prenota.scambi.org;
         root /var/www/prenota;
+
+        client_max_body_size 8M;
 
         access_log /var/log/nginx/prenota-access.log;
         error_log /var/log/nginx/prenota-error.log;
