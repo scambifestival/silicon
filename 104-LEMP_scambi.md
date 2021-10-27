@@ -276,3 +276,62 @@ modifiche wordpress
     define('FS_METHOD', 'direct');
     define('FS_CHMOD_DIR', 0755);
     define('FS_CHMOD_FILE', 0644);
+
+### visits.scambi.org
+
+>mkdir /var/www/visits  
+>chown -R silicon:www-data /var/www/visits  
+
+>cd /root  
+>wget http://ftp.it.debian.org/debian/pool/main/g/goaccess/goaccess_1.4-1_amd64.deb  
+>dpkg -i goaccess_1.4-1_amd64.deb  
+>apt -f install  
+
+>nano /root/visits-script.sh
+
+    #!/bin/bash
+    /usr/bin/zcat -f /var/log/nginx/scambiorg-access.log* | /usr/bin/goaccess - --log-format=COMBINED --anonymize-ip -o /var/www/visits/index.html
+
+>crontab -e
+
+        12,42 * * * * /bin/bash /root/visits-script.sh
+
+>nano /etc/nginx/sites-available/visits
+
+    server {
+        listen 80;
+        listen [::]:80;
+        server_name visits.scambi.org;
+        root /var/www/visits;
+
+        access_log /var/log/nginx/visits-access.log;
+        error_log /var/log/nginx/visits-error.log;
+
+        location / {
+            try_files $uri $uri/ /index.php?args;
+            index index.php index.html;
+        }
+
+        location ~ \.php$ {
+            try_files $uri =404;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+        }
+
+    }
+
+>ln -s /etc/nginx/sites-available/visits /etc/nginx/sites-enabled/
+
+>systemctl restart nginx
+
+>certbot --nginx -d visits.scambi.org
+
+modificare file configurazione per TLS  
+>nano /etc/nginx/sites-available/visits
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+    add_header Strict-Transport-Security "max-age=31536000";
+
+>systemctl restart nginx

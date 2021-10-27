@@ -169,7 +169,7 @@ abilitare ip forward
 installazione e configurazione tinc
 >apt install tinc
 
->cd /etc/tinc
+>cd /etc/tinc  
 >mkdir -p scambi/hosts
 
 >nano nets.boot

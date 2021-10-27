@@ -20,11 +20,11 @@ Di seguito l’elenco dei server ordinati per IP "interni" (TINC)
 
 | IP TINC | hostname | ssh * | ruolo | IP pubblico |
 | --- | --- | --- | --- | --- |
-| 192.168.64.1 | pila1het | 822 | vpn1 |  |
-| 192.168.64.2 | pila2sca | 822 | vpn2 |  |
+| 192.168.64.1 | pila1het | 822 | vpn1 | 94.130.24.241 |
+| 192.168.64.2 | pila2??? | 822 | vpn2 |  |
 | 192.168.64.3 | bckp1t4v | 822 | backup |  |
-| 192.168.64.4 | lemp1sca | 22 | LEMP scambi.org |  |
-| 192.168.64.5 | stor1con | 22 | storage nextcloud |  |
+| 192.168.64.4 | lemp1sca | 22 | LEMP scambi.org | ***REMOVED*** |
+| 192.168.64.5 | stor1con | 22 | storage nextcloud | 207.180.218.154 |
 
 \* 822 - ssh internet | 22 - ssh LAN
 
