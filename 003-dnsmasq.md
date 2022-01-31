@@ -22,7 +22,7 @@ verificare che nel file /etc/dnsmasq.conf sia decommentato
 
     nameserver 192.168.64.1
     nameserver 192.168.64.2
-    nameserver 1.0.0.1
+    nameserver 9.9.9.9
 
 >nano /etc/dnsmasq.d/dnsmasq.conf
 

@@ -51,7 +51,7 @@ Questo documento è per gli host "normali".
     Subnet = 192.168.64.X/32
     Port = 6996
 
-copiare scambi/hosts/”nome host” su pila1sca  
+copiare scambi/hosts/”nome host” su pila1het  
 copiare scambi/hosts/pila1het su questo host
 
 >nano scambi/hosts/pila1het-up

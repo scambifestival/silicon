@@ -69,7 +69,7 @@ configurazione php
 
 >systemctl restart php7.4-fpm
 
-configurare firewall
+configurazione firewall
 >firewall-cmd --permanent --zone=public --add-service={http,https}  
 >firewall-cmd --reload
 
@@ -162,7 +162,7 @@ configurazione borg
 
     sleep 1
 
-    /usr/bin/mysqldump --add-drop-database --all-databases --user=root > /var/local/backup/raw/sql/dump.sql
+    /usr/bin/mysqldump --add-drop-database --all-databases --routines --user=root > /var/local/backup/raw/sql/dump.sql
 
     sleep 1
 
