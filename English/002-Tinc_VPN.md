@@ -55,7 +55,7 @@ cd /etc/tinc
     Subnet = 192.168.64.X/32
     Port = 6996
 
-copy `scambi/hosts/hostname` on `pila1sca`
+copy `scambi/hosts/hostname` on `pila1het`
 copy `scambi/hosts/pila1het` on this host
 
 `nano scambi/hosts/pila1het-up`

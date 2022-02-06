@@ -25,6 +25,7 @@ Below the list of the servers, ordered according to “internal” (TINC) IPs.
 | 192.168.64.3 | bckp1t4v | 822 | backup |  |
 | 192.168.64.4 | lemp1sca | 22 | LEMP scambi.org | ***REMOVED*** |
 | 192.168.64.5 | stor1con | 22 | storage nextcloud | 207.180.218.154 |
+| 192.168.64.6 | lemp2het | 22 | LEMP | 142.132.182.176 |
 
 \* 822 - ssh internet | 22 - ssh LAN
 
