@@ -7,8 +7,8 @@ In questo documento è presente la procedura adottata per installare il server e
 
 <br/> **procedura**
 
->wget https://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-1+buster_all.deb  
->dpkg -i zabbix-release_5.0-1+buster_all.deb  
+>wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1%2Bdebian11_all.deb  
+>dpkg -i zabbix-release_6.0-1+debian11_all.deb  
 >apt update
 
 >apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent mariadb-server  

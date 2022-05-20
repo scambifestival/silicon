@@ -22,12 +22,12 @@ Questo documento è per gli host "normali".
     Device=/dev/net/tun
     AddressFamily=ipv4
     Mode=switch
-    Port=6996
+    Port=777
 
     Cipher=aes-256-cbc
     Digest=SHA512
 
-    ConnectTo=pila1het
+    ConnectTo=pila1see
     #ConnectTo=pila2sca
 
 >nano scambi/tinc-up
@@ -49,24 +49,24 @@ Questo documento è per gli host "normali".
 >nano scambi/hosts/”nome host”
 
     Subnet = 192.168.64.X/32
-    Port = 6996
+    Port = 777
 
-copiare scambi/hosts/”nome host” su pila1het  
-copiare scambi/hosts/pila1het su questo host
+copiare scambi/hosts/”nome host” su pila1see  
+copiare scambi/hosts/pila1see su questo host
 
->nano scambi/hosts/pila1het-up
+>nano scambi/hosts/pila1see-up
 
     #!/bin/sh
     ip route add 192.168.64.1 dev $INTERFACE
     ip route add 192.168.66.0/24 via 192.168.64.1 dev $INTERFACE
 
->nano scambi/hosts/pila1het-down
+>nano scambi/hosts/pila1see-down
 
     #!/bin/sh
     ip route del 192.168.66.0/24 via 192.168.64.1 dev $INTERFACE
     ip route del 192.68.64.1 dev $INTERFACE
 
->chmod +x scambi/hosts/pila1het-*
+>chmod +x scambi/hosts/pila1see-*
 
 copiare scambi/hosts/”nome host” su pila2sca  
 copiare scambi/hosts/pila2sca su questo host
@@ -98,7 +98,7 @@ copiare scambi/hosts/pila2sca su questo host
 
 >systemctl enable --now tinc@scambi
 
-<br/> aggiungere record al dns su pila1sca
+<br/> aggiungere record al dns su pila1see
 
 <br/> **tricks**
 

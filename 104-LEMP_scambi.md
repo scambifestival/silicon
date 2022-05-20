@@ -2,7 +2,7 @@
 
 <br/> **procedura**
 
-<br/> seguire template Debian 10
+<br/> seguire template Debian 11
 
 installazione pacchetti utili
 >apt install screen git gnupg rsync

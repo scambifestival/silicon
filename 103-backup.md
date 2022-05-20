@@ -1,10 +1,10 @@
 ## Backup
 
-time4vps non supporta ancora Debian 10 sui VPS storage, installato Debian 9
+time4vps non supporta ancora Debian 11 sui VPS storage, installato Debian 9
 
 <br/> **procedura**
 
-seguire template Debian 10
+seguire template Debian 11
 
 fix locale
 >apt install locales
@@ -18,4 +18,4 @@ configurazione cartelle
 >mkdir -p /data/"hostname"/{backup,borg,log}
 
 esempio:
->mkdir -p /data/{pila1het,lemp1sca,lamp1con}/{backup,borg,log}
+>mkdir -p /data/{pila1see,lemp1sca,lamp1con}/{backup,borg,log}
