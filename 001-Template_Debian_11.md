@@ -13,8 +13,8 @@ impostare fuso orario e installare chrony per NTP
 >timedatectl set-timezone Europe/Rome  
 >apt install chrony
 
-generare chiave id_rsa
->ssh-keygen -t rsa -b 4096
+generare chiave id_ed25519
+>ssh-keygen -t ed25519
 
 aggiungere swap (consigliato)
 >dd if=/dev/zero of=/swapfile count=1024 bs=1M status=progress  
@@ -61,7 +61,7 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 
 >firewall-cmd --state  
 >firewall-cmd --permanent --zone=public --add-interface=eth0  
->firewall-cmd --permanent --zone=internal --add-interface=tun0  
+>firewall-cmd --permanent --zone=internal --add-interface=scambi  
 
 >firewall-cmd --permanent --new-service=aa_tinc  
 >firewall-cmd --permanent --service=aa_tinc --set-description='custom tinc servers'  
@@ -75,7 +75,8 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 >firewall-cmd --permanent --zone=public --add-service=aa_tinc  
 
 >firewall-cmd --permanent --zone=public --set-target=DROP  
->firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p icmp -s 0.0.0.0/0 -d 0.0.0.0/0 -j ACCEPT  
+>firewall-cmd --permanent --add-icmp-block-inversion  
+>firewall-cmd --permanent --zone=public --add-icmp-block={echo-reply,echo-request,port-unreachable,time-exceeded}  
 
 >firewall-cmd --reload  
 

@@ -169,8 +169,8 @@ abilitare ip forward
 installazione e configurazione tinc
 >apt install tinc
 
->cd /etc/tinc  
->mkdir -p scambi/hosts
+>mkdir -p /etc/tinc/scambi/hosts  
+>cd /etc/tinc
 
 >nano nets.boot
 
@@ -228,7 +228,12 @@ configurazione dnsmasq
 
 >nano /etc/default/dnsmasq
 
-    aggiungere ",.hosts,.resolv" alla variabile CONFIG_DIR
+  	aggiungere ",.hosts,.resolv" alla variabile CONFIG_DIR
+
+verificare che nel file /etc/dnsmasq.conf sia decommentato
+
+    conf-dir=/etc/dnsmasq.d/,*.conf
+
 
 >nano /etc/dnsmasq.d/dnsmasq.resolv
 
@@ -340,12 +345,11 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 >firewall-cmd --permanent --zone=public --add-service={aa_ssh,aa_openvpn,aa_tinc}  
 
 >firewall-cmd --permanent --zone=internal --add-interface=tun0  
->firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i tun0 -j ACCEPT  
->firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -m state --state ESTABLISHED,RELATED -j ACCEPT  
+>firewall-cmd --permanent --zone=internal --add-forward
 
->firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i scambi -j ACCEPT  
 >firewall-cmd --permanent --zone=public --set-target=DROP  
->firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p icmp -s 0.0.0.0/0 -d 0.0.0.0/0 -j ACCEPT  
+>firewall-cmd --permanent --add-icmp-block-inversion  
+>firewall-cmd --permanent --zone=public --add-icmp-block={echo-reply,echo-request,port-unreachable,time-exceeded}  
 
 >firewall-cmd --reload
 
