@@ -105,11 +105,9 @@ generare il certificato CRL (sia la prima volta, sia dopo aver aggiunto revoche)
 >./easyrsa gen-crl  
 >cp /etc/openvpn/easyrsa/pki/crl.pem /etc/openvpn/server/
 
-per creare file .ovpn, usare "ovpngen" (vedi https://github.com/graysky2/ovpngen)
+per creare file .ovpn, usare "ovpngen" (vedi https://github.com/nuciluc/ovpngen)
 
 >/root/ovpngen vipien1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 1111 udp > /home/silicon/client-USERNAME.ovpn
-
-modificare client-USERNAME.ovpn togliendo commento a "cipher" e "auth"
 
 configurazione openvpn
 
@@ -318,7 +316,7 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 
 >firewall-cmd --state  
 >firewall-cmd --permanent --zone=public --add-interface=eth0  
->firewall-cmd --permanent --zone=internal --add-interface=tun0  
+>firewall-cmd --permanent --zone=internal --add-interface=scambi  
 
 >firewall-cmd --permanent --zone=internal --remove-service={mdns,samba-client,ssh}  
 
@@ -341,9 +339,11 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 >firewall-cmd --permanent --zone=public --remove-service=ssh  
 >firewall-cmd --permanent --zone=public --add-service={aa_ssh,aa_openvpn,aa_tinc}  
 
+>firewall-cmd --permanent --zone=internal --add-interface=tun0  
 >firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i tun0 -j ACCEPT  
 >firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -m state --state ESTABLISHED,RELATED -j ACCEPT  
 
+>firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i scambi -j ACCEPT  
 >firewall-cmd --permanent --zone=public --set-target=DROP  
 >firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p icmp -s 0.0.0.0/0 -d 0.0.0.0/0 -j ACCEPT  
 

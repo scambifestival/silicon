@@ -11,12 +11,12 @@ In questo documento è presente la procedura adottata per installare il server e
 >dpkg -i zabbix-release_6.0-1+debian11_all.deb  
 >apt update
 
->apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent mariadb-server  
+>apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent zabbix-sql-scripts mariadb-server  
 
 configurazione mariadb
 >mysql_secure_installation  (vedi Keepass)
 
->mysql -u root -p
+>mysql -u root
 
     CREATE DATABASE zabbix DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
     CREATE USER zabbix@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
@@ -24,7 +24,7 @@ configurazione mariadb
     FLUSH PRIVILEGES;
     exit
 
->zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p zabbix  
+>zcat  /usr/share/doc/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u zabbix -p zabbix  
 
 >nano /etc/zabbix/zabbix_server.conf  
 
@@ -54,7 +54,8 @@ cambiare password user Admin
 
 <br/> **configurazione template**  
 
-clonare il template "Template OS Linux by Zabbix agent" chiamandolo "AA_template_base"  
+clonare il template "Linux by Zabbix agent" chiamandolo "AA_template_Linux_agent"  
+disattivare i tre Items di tipo "component:os"  
 
 abilitare notifiche (dopo aver fatto procedura per bot Telegram)
 >Configuration > Actions > Report problems to Zabbix administrators	> Enabled
@@ -64,4 +65,4 @@ per inserire un nuovo host a monitoraggio
 <br/>inserire hostname  
 inserire "Linux servers" in groups  
 inserire l'IP in "IP address"  
-<br/>nella scheda Templates aggiungere "AA_template_base"
+<br/>nella scheda Templates aggiungere "AA_template_Linux_agent"
