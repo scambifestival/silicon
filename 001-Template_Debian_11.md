@@ -52,7 +52,8 @@ configurazione agente zabbix
     server active = zabbix.scambi  
     hostname =
 
->systemctl enable --now zabbix-agent
+>systemctl enable --now zabbix-agent  
+>systemctl restart zabbix-agent  
 
 applicare regole firewall con firewalld
 >apt install firewalld

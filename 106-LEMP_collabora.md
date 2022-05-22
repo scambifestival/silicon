@@ -7,10 +7,11 @@
 repository collabora
 >cd /usr/share/keyrings  
 >wget https://collaboraoffice.com/downloads/gpg/collaboraonline-release-keyring.gpg  
+
 >nano /etc/apt/sources.list.d/collaboraonline.sources  
 
     Types: deb
-    URIs: https://www.collaboraoffice.com/repos/CollaboraOnline/CODE-debian10
+    URIs: https://www.collaboraoffice.com/repos/CollaboraOnline/CODE-debian11
     Suites: ./
     Signed-By: /usr/share/keyrings/collaboraonline-release-keyring.gpg
 
@@ -23,7 +24,7 @@ configurazione collabora
 >coolconfig set storage.wopi.host nuvola.scambi.org  
 >coolconfig set per_document.max_concurrency 2  
 >coolconfig set per_document.idle_timeout_secs 1800  
->coolconfig set-admin-password  (vedi Keepass)
+>coolconfig set-admin-password  (vedi Keepass)  
 >systemctl restart coolwsd  
 
 configurazione firewall
@@ -102,10 +103,27 @@ configurazione nginx
 
 >certbot --nginx -d collabora.scambi.org  
 
+modificare file configurazione per TLS  
+>nano /etc/nginx/sites-available/collabora  
+
+    add_header Strict-Transport-Security "max-age=31536000";
+
+>systemctl restart nginx
+
 installazione font aggiuntivi
->apt install ttf-mscorefonts-installer  
+>apt install curl ttf-mscorefonts-installer  
 >cd /root  
 >wget http://ftp.it.debian.org/debian/pool/main/f/fonts-inter/fonts-inter_3.19+ds-2_all.deb  
 >dpkg -i fonts-inter_3.19+ds-2_all.deb  
+>mkdir -p /usr/share/fonts/googlefonts  
+>curl https://fonts.google.com/download?family=Poppins -o Poppins.zip  
+>curl https://fonts.google.com/download?family=Londrina%20Solid -o LondrinaSolid.zip  
+>unzip Poppins.zip -d /usr/share/fonts/googlefonts/ -x OFL.txt  
+>unzip LondrinaSolid.zip -d /usr/share/fonts/googlefonts/ -x OFL.txt  
+>chmod -R --reference=/usr/share/fonts/opentype /usr/share/fonts/googlefonts  
+>fc-cache -fv  
 
 >coolwsd-systemplate-setup /opt/cool/systemplate /opt/collaboraoffice
+
+test funzionamento  
+https://collabora.scambi.org/browser/dist/admin/admin.html

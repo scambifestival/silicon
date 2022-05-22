@@ -24,8 +24,8 @@ Di seguito l’elenco dei server ordinati per IP "interni" (TINC)
 | 192.168.64.2 | pila2sca | 822 | vipien2 | ***REMOVED*** |
 | 192.168.64.3 | bckp1t4v | 822 | backup |  |
 | 192.168.64.4 | lemp1see | 22 | LEMP scambi.org | ***REMOVED*** |
-| 192.168.64.5 | stor1see | 22 | storage nextcloud |  |
-| 192.168.64.6 | lemp2see | 22 | LEMP collabora |  |
+| 192.168.64.5 | stor1see | 22 | storage nextcloud | ***REMOVED*** |
+| 192.168.64.6 | lemp2see | 22 | LEMP collabora | ***REMOVED*** |
 
 \* 822 - ssh internet | 22 - ssh LAN  
 

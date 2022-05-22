@@ -15,12 +15,9 @@ configurazione postgresql
 >>CREATE USER nextcloud WITH CREATEDB PASSWORD 'VEDI-KEEPASS!';  
 >>\q
 
-installazione php 7.4
->wget -q https://packages.sury.org/php/apt.gpg -O- | apt-key add -  
->echo "deb https://packages.sury.org/php/ buster main" | tee /etc/apt/sources.list.d/php.list  
+installazione php
 
->apt update  
->apt install php7.4-fpm php7.4-xml php7.4-cli php7.4-cgi php7.4-pgsql php7.4-mbstring php7.4-gd php7.4-curl php7.4-zip php7.4-json php7.4-common php7.4-intl php7.4-bz2 php7.4-gmp php7.4-bcmath php7.4-apcu php-pear php7.4-ldap php7.4-imagick libmagickcore-6.q16-6-extra  
+>apt install php-fpm php-xml php-cli php-cgi php-pgsql php-mbstring php-gd php-curl php-zip php-json php-common php-intl php-bz2 php-gmp php-bcmath php-apcu php-pear php-ldap php-imagick libmagickcore-6.q16-6-extra  
 
 configurazione php
 >nano /etc/php/7.4/fpm/php.ini
@@ -98,13 +95,6 @@ configurazione apache
     <IfModule mod_headers.c>
       Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
     </IfModule>
-    SSLProtocol -all +TLSv1.2 +TLSv1.3
-    SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:ECDHE-RSA-AES128-GCM-SHA256:AES256+EECDH:DHE-RSA-AES128-GCM-SHA256:AES256+EDH:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4
-
->/etc/letsencrypt/options-ssl-apache.conf
-
-    #SSLProtocol             all -SSLv2 -SSLv3
-    #SSLCipherSuite          ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
 
 >systemctl restart apache2
 
@@ -167,7 +157,7 @@ configurazione borg
     fi
 
     echo -e "\n$(date +%Y%m%d-%H%M) - START PRUNE\n" >>$LOG_FILE
-    borg prune -v --list $BORG_REPO --keep-daily=7 --keep-weekly=4 >>$LOG_FILE 2>&1
+    borg prune -v --list $BORG_REPO --keep-daily=7 --keep-weekly=2 >>$LOG_FILE 2>&1
 
     if [ "$?" = "1" ] ; then
         echo -e "\n$(date +%Y%m%d-%H%M) - PRUNE ERROR\n" >>$LOG_FILE
