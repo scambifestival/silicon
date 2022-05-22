@@ -14,7 +14,7 @@ In questo documento è presente la procedura adottata per installare il server e
 >apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent zabbix-sql-scripts mariadb-server  
 
 configurazione mariadb
->mysql_secure_installation  (vedi Keepass)
+>mariadb-secure-installation  (vedi Keepass)
 
 >mysql -u root
 
@@ -36,7 +36,7 @@ configurazione mariadb
 
 >systemctl enable --now zabbix-server zabbix-agent apache2
 
->firewall-cmd --permanent --zone=internal --add-service=http  
+>firewall-cmd --permanent --zone=internal --add-service={http,zabbix-server}  
 >firewall-cmd --reload
 
 >nano /etc/dnsmasq.d/dnsmasq.hosts

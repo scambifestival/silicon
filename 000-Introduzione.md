@@ -27,7 +27,8 @@ Di seguito l’elenco dei server ordinati per IP "interni" (TINC)
 | 192.168.64.5 | stor1see | 22 | storage nextcloud |  |
 | 192.168.64.6 | lemp2see | 22 | LEMP collabora |  |
 
-\* 822 - ssh internet | 22 - ssh LAN
+\* 822 - ssh internet | 22 - ssh LAN  
+
 Elenco fornitori  
 - see - seeweb
 - t4v - time4vps

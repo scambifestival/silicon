@@ -75,8 +75,8 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 >firewall-cmd --permanent --zone=public --add-service=aa_tinc  
 
 >firewall-cmd --permanent --zone=public --set-target=DROP  
->firewall-cmd --permanent --add-icmp-block-inversion  
->firewall-cmd --permanent --zone=public --add-icmp-block={echo-reply,echo-request,port-unreachable,time-exceeded}  
+>firewall-cmd --permanent --zone=public --add-icmp-block-inversion  
+>firewall-cmd --permanent --zone=public --add-icmp-block={echo-reply,echo-request,port-unreachable,time-exceeded,timestamp-request,timestamp-reply}  
 
 >firewall-cmd --reload  
 

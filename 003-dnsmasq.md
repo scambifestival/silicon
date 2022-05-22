@@ -57,7 +57,7 @@ modificare /etc/resolv.conf mettendo in testa al file
 
     nameserver 127.0.0.1
 
-modificare /etc/dhcp/dhclient.conf, se presente,decommentando
+modificare /etc/dhcp/dhclient.conf, se presente, decommentando
 
     prepend domain-name-servers 127.0.0.1;
 
