@@ -103,17 +103,14 @@ configurazione fail2ban
     bantime = 300
     findtime = 600
     maxretry = 5
+    bantime.increment = true
 
     [sshd]
     enabled = true
     port = 822
     logpath = %(sshd_log)s
     backend = %(sshd_backend)s
-
->nano /etc/fail2ban/action.d/nftables-common.local
-
-    [Init]
-    blocktype = DROP
+    banaction = nftables[blocktype=drop]
 
 >systemctl restart fail2ban
 
