@@ -28,7 +28,7 @@ Questo documento è per gli host "normali".
     Digest=SHA512
 
     ConnectTo=pila1see
-    #ConnectTo=pila2sca
+    ConnectTo=pila2sca
 
 >nano scambi/tinc-up
 

@@ -4,6 +4,14 @@
 
 <br/> seguire template Debian 11
 
+tuning swap
+>nano /etc/sysctl.d/88-tuning.conf
+
+    vm.swappiness = 20
+    vm.vfs_cache_pressure = 125
+
+>sysctl --system
+
 installazione pacchetti utili
 >apt install screen git gnupg rsync
 
@@ -62,6 +70,7 @@ configurazione php
     pm.start_servers = 8
     pm.min_spare_servers = 4
     pm.max_spare_servers = 8
+    pm.max_requests = 10000
 
 >systemctl restart php7.4-fpm
 
@@ -196,6 +205,55 @@ configurazione borg
 >crontab -e
 
     00 04 * * * /bin/bash /var/local/backup/backup_script.sh
+
+
+<br/>**backup remoto**
+>borg init ssh://lemp1see@bckp1t4v.scambi:822/home/lemp1see/borg -e repokey (***REMOVED***)  
+
+>nano /var/local/backup/dr_script.sh
+
+    #!/bin/bash
+
+    # variables to configure
+    BKP_STRING="/var/local/backup/raw/"
+    export BORG_REPO="ssh://lemp1see@bckp1t4v.scambi:822/home/lemp1see/borg"
+    export BORG_PASSPHRASE="***REMOVED***"
+
+    # script start
+    LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START EXECUTION" >>$LOG_FILE
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START ARCHIVE CREATION\n" >>$LOG_FILE
+
+    borg create -v --stats --compression lz4 $BORG_REPO::{now:%Y%m%d-%H%M} $BKP_STRING >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - BACKUP ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START PRUNE\n" >>$LOG_FILE
+    borg prune -v --list $BORG_REPO --keep-daily=7 --keep-weekly=4 >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - PRUNE ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - END EXECUTION\n" >>$LOG_FILE
+
+    export BORG_REPO=""
+    export BORG_PASSPHRASE=""
+    exit 0
+
+>crontab -e
+
+    30 04 * * * /bin/bash /var/local/backup/dr_script.sh
 
 
 ### prenota.scambi.org

@@ -6,16 +6,39 @@ time4vps non supporta ancora Debian 11 sui VPS storage, installato Debian 9
 
 seguire template Debian 11
 
+fix dns e hostname
+>nano /root/resolv.conf
+
+    nameserver 127.0.0.1
+    nameserver 80.209.227.143
+    nameserver 62.77.155.143
+
+>crontab -e
+
+    @reboot cp /root/resolv.conf /etc/resolv.conf
+    @reboot hostnamectl set-hostname bckp1t4v
+
 fix locale
->apt install locales
+>apt install locales  
 >dpkg-reconfigure locales
 >>selezionare it_IT.UTF-8
 
 installazione pacchetti utili
->apt install rsync borgbackup iftop screen
+>nano /etc/apt/sources.list
 
-configurazione cartelle
->mkdir -p /data/"hostname"/{backup,borg,log}
+    deb http://deb.debian.org/debian stretch-backports main contrib non-free
 
+>apt update  
+>apt install rsync iftop screen  
+>apt install -t stretch-backports borgbackup  
+
+configurazione utente per ogni server  
 esempio:
->mkdir -p /data/{pila1see,lemp1see,stor1see}/{backup,borg,log}
+
+    adduser --disabled-password --gecos "" --uid 2004 lemp1see
+    mkdir -p /home/lemp1see/{backup,borg,log}
+    echo "borg repo directly from host" > /home/lemp1see/backup/README
+    mkdir /home/lemp1see/.ssh
+    nano /home/lemp1see/.ssh/authorized_keys
+    command="borg serve --restrict-to-path /home/lemp1see/borg",restrict {chiave ssh}
+    chown -R lemp1see: /home/lemp1see

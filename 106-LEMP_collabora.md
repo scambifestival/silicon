@@ -4,6 +4,13 @@
 
 <br/> seguire template Debian 11
 
+tuning swap
+>nano /etc/sysctl.d/88-tuning.conf
+
+    vm.swappiness = 20
+
+>sysctl --system
+
 repository collabora
 >cd /usr/share/keyrings  
 >wget https://collaboraoffice.com/downloads/gpg/collaboraonline-release-keyring.gpg  
