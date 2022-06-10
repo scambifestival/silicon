@@ -7,7 +7,8 @@
 tuning swap
 >nano /etc/sysctl.d/88-tuning.conf
 
-    vm.swappiness = 20
+    vm.swappiness = 1
+    vm.vfs_cache_pressure = 150
 
 >sysctl --system
 
