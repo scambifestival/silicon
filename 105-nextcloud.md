@@ -4,6 +4,14 @@
 
 <br/> seguire template Debian 11
 
+tuning swap
+>nano /etc/sysctl.d/88-tuning.conf
+
+    vm.swappiness = 1
+    vm.vfs_cache_pressure = 150
+
+>sysctl --system
+
 installazione pacchetti utili
 >apt install screen git gnupg rsync sudo
 
@@ -37,10 +45,11 @@ configurazione php
 
 >nano /etc/php/7.4/fpm/pool.d/www.conf
 
-    pm.max_children = 120
+    pm.max_children = 60
     pm.start_servers = 12
     pm.min_spare_servers = 6
     pm.max_spare_servers = 18
+    pm.max_requests = 10000
 
 >nano /etc/php/7.4/mods-available/apcu.ini
 
@@ -102,12 +111,10 @@ configurazione apache
 
     */5  *  *  *  * php7.4 -f /var/www/nextcloud/cron.php
 
-
-
 <br/>**backup locale**
 
 >mkdir -p /var/local/backup/raw/{files,sql}  
->mkdir -p /var/local/backup/raw/files/var/www/nextcloud  
+>mkdir -p /var/local/backup/raw/files/var/www/nextcloud
 
 >nano /etc/fstab  
 
@@ -183,7 +190,55 @@ configurazione borg
 
 >crontab -e
 
-    00 04 * * 1-6 /bin/bash /var/local/backup/backup_script.sh
+    00 04 * * * /bin/bash /var/local/backup/backup_script.sh
+
+<br/>**backup remoto**
+>borg init ssh://stor1see@bckp1t4v.scambi:822/home/stor1see/borg -e repokey (***REMOVED***)  
+
+>nano /var/local/backup/dr_script.sh
+
+    #!/bin/bash
+
+    # variables to configure
+    BKP_STRING="/var/local/backup/raw/"
+    export BORG_REPO="ssh://stor1see@bckp1t4v.scambi:822/home/stor1see/borg"
+    export BORG_PASSPHRASE="***REMOVED***"
+
+    # script start
+    LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START EXECUTION" >>$LOG_FILE
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START ARCHIVE CREATION\n" >>$LOG_FILE
+
+    borg create -v --stats --compression lz4 $BORG_REPO::{now:%Y%m%d-%H%M} $BKP_STRING >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - BACKUP ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START PRUNE\n" >>$LOG_FILE
+    borg prune -v --list $BORG_REPO --keep-daily=7 --keep-weekly=4 >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - PRUNE ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - END EXECUTION\n" >>$LOG_FILE
+
+    export BORG_REPO=""
+    export BORG_PASSPHRASE=""
+    exit 0
+
+>crontab -e
+
+    00 05 * * * /bin/bash /var/local/backup/dr_script.sh
 
 
 ### x.scambi.org
