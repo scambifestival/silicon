@@ -4,14 +4,6 @@
 
 <br/> seguire template Debian 11
 
-tuning swap
->nano /etc/sysctl.d/88-tuning.conf
-
-    vm.swappiness = 1
-    vm.vfs_cache_pressure = 150
-
->sysctl --system
-
 installazione pacchetti utili
 >apt install screen git gnupg rsync sudo
 
@@ -45,11 +37,10 @@ configurazione php
 
 >nano /etc/php/7.4/fpm/pool.d/www.conf
 
-    pm.max_children = 60
+    pm.max_children = 120
     pm.start_servers = 12
     pm.min_spare_servers = 6
     pm.max_spare_servers = 18
-    pm.max_requests = 10000
 
 >nano /etc/php/7.4/mods-available/apcu.ini
 
@@ -111,10 +102,12 @@ configurazione apache
 
     */5  *  *  *  * php7.4 -f /var/www/nextcloud/cron.php
 
+
+
 <br/>**backup locale**
 
 >mkdir -p /var/local/backup/raw/{files,sql}  
->mkdir -p /var/local/backup/raw/files/var/www/nextcloud
+>mkdir -p /var/local/backup/raw/files/var/www/nextcloud  
 
 >nano /etc/fstab  
 
@@ -190,52 +183,48 @@ configurazione borg
 
 >crontab -e
 
-    00 04 * * * /bin/bash /var/local/backup/backup_script.sh
+    00 04 * * 1-6 /bin/bash /var/local/backup/backup_script.sh
 
-<br/>**backup remoto**
->borg init ssh://stor1see@bckp1t4v.scambi:822/home/stor1see/borg -e repokey (***REMOVED***)  
 
->nano /var/local/backup/dr_script.sh
+### x.scambi.org
 
-    #!/bin/bash
+>nano /etc/apache2/sites-available/x.conf  
 
-    # variables to configure
-    BKP_STRING="/var/local/backup/raw/"
-    export BORG_REPO="ssh://stor1see@bckp1t4v.scambi:822/home/stor1see/borg"
-    export BORG_PASSPHRASE="***REMOVED***"
+    <VirtualHost *:80>
+      ServerName x.scambi.org
+      DocumentRoot /var/www/x
+      ErrorLog ${APACHE_LOG_DIR}/x-error.log
+      CustomLog ${APACHE_LOG_DIR}/x-access.log combined
 
-    # script start
-    LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"
+      <Directory /var/www/x/>
+        Require all granted
+      </Directory>
+    </VirtualHost>
 
-    echo -e "\n$(date +%Y%m%d-%H%M) - START EXECUTION" >>$LOG_FILE
+>a2ensite x  
+>systemctl restart apache2  
 
-    echo -e "\n$(date +%Y%m%d-%H%M) - START ARCHIVE CREATION\n" >>$LOG_FILE
+>mkdir /var/www/x  
+>chown www-data: /var/www/x
 
-    borg create -v --stats --compression lz4 $BORG_REPO::{now:%Y%m%d-%H%M} $BKP_STRING >>$LOG_FILE 2>&1
+>certbot --apache -d x.scambi.org  
 
-    if [ "$?" = "1" ] ; then
-        echo -e "\n$(date +%Y%m%d-%H%M) - BACKUP ERROR\n" >>$LOG_FILE
-        export BORG_REPO=""
-        export BORG_PASSPHRASE=""
-        exit 1
-    fi
+>nano /etc/apache2/sites-available/x-le-ssl.conf  
 
-    echo -e "\n$(date +%Y%m%d-%H%M) - START PRUNE\n" >>$LOG_FILE
-    borg prune -v --list $BORG_REPO --keep-daily=7 --keep-weekly=4 >>$LOG_FILE 2>&1
+    <IfModule mod_headers.c>
+      Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+    </IfModule>
 
-    if [ "$?" = "1" ] ; then
-        echo -e "\n$(date +%Y%m%d-%H%M) - PRUNE ERROR\n" >>$LOG_FILE
-        export BORG_REPO=""
-        export BORG_PASSPHRASE=""
-        exit 1
-    fi
+>systemctl restart apache2
 
-    echo -e "\n$(date +%Y%m%d-%H%M) - END EXECUTION\n" >>$LOG_FILE
+su Nextcloud abilitare la app "External storage support" e configurare la cartella "x.scambi.org"  
 
-    export BORG_REPO=""
-    export BORG_PASSPHRASE=""
-    exit 0
+<br/>**backup locale**
 
->crontab -e
+>mkdir -p /var/local/backup/raw/files/var/www/x  
 
-    00 05 * * * /bin/bash /var/local/backup/dr_script.sh
+>nano /etc/fstab  
+
+    /var/www/x /var/local/backup/raw/files/var/www/x none bind 0 0
+
+>mount -a
