@@ -193,6 +193,7 @@ configurazione borg
     00 04 * * * /bin/bash /var/local/backup/backup_script.sh
 
 <br/>**backup remoto**
+
 >borg init ssh://stor1see@bckp1t4v.scambi:822/home/stor1see/borg -e repokey (***REMOVED***)  
 
 >nano /var/local/backup/dr_script.sh
