@@ -110,7 +110,6 @@ configurazione borg
 
     00 08 * * * /bin/bash /var/local/backup/backup_script.sh
 
-
 <br/>**backup remoto**
 
 >borg init ssh://data1see@bckp1t4v.scambi:822/home/data1see/borg -e repokey (***REMOVED***)  
