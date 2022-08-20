@@ -76,6 +76,8 @@ nano /etc/network/interfaces
 
 >systemctl disable --now resolvconf  
 >rm /run/dnsmasq/resolv.conf  
+>rm /var/run/resolvconf/interface/*  
+>apt remove resolvconf  
 >systemctl restart dnsmasq
 
 >ls -l /etc/resolv.conf

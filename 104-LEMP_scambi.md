@@ -187,13 +187,13 @@ compilazione sito
         find /var/www/scambiorg -type f -exec chmod 664 {} \; >>$LOG_FILE 2>&1
         echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
         sleep 1
-        mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org" -- "staff@scambi.org, nuciluc@zoho.com" < "/dev/null"
+        mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org" -- "staff@scambi.org" < "/dev/null"
         exit 0
       else
         echo -e "\n$(date +%Y%m%d-%H%M%S) - BUILD ERROR" >>$LOG_FILE
         echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
         sleep 1
-        mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org - ERROR" -- "staff@scambi.org, nuciluc@zoho.com" < "/dev/null"
+        mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org - ERROR" -- "staff@scambi.org" < "/dev/null"
         exit 1
       fi
     fi
@@ -201,7 +201,6 @@ compilazione sito
 >crontab -e  
 
     */15 * * * * bash /home/silicon/build-scambiorg.sh
-
 
 <br/>**backup locale**
 

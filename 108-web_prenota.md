@@ -197,3 +197,118 @@ modificare file configurazione per TLS
 >systemctl restart nginx
 
 <br/>**backup locale**
+
+>mkdir -p /var/local/backup/raw/{files,sql}  
+
+configurazione borg
+>apt install borgbackup  
+>mkdir -p /var/local/backup/raw/{files,sql}
+
+>borg init /var/local/backup/borg -e repokey (***REMOVED***)  
+
+>nano /var/local/backup/backup_script.sh
+
+    #!/bin/bash
+
+    /usr/bin/rsync -a --delete -R /./etc/nginx/sites-* /var/local/backup/raw/files/ 2>&1
+
+    sleep 1
+
+    /usr/bin/rsync -a --delete -R /./opt/ /var/local/backup/raw/files/ 2>&1
+
+    sleep 1
+
+    sudo -Hiu postgres pg_dump pretix > /var/local/backup/raw/sql/pretix.sql 2>&1
+
+    sleep 1
+
+    # variables to configure
+    BKP_STRING="/var/local/backup/raw/"
+    export BORG_REPO="/var/local/backup/borg"
+    export BORG_PASSPHRASE="***REMOVED***"
+
+    # script start
+    LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START EXECUTION" >>$LOG_FILE
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START ARCHIVE CREATION\n" >>$LOG_FILE
+    borg create -v --stats --compression lz4 $BORG_REPO::{now:%Y%m%d-%H%M} $BKP_STRING >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - BACKUP ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START PRUNE\n" >>$LOG_FILE
+    borg prune -v --list $BORG_REPO --keep-daily=7 --keep-weekly=4 >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - PRUNE ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - END EXECUTION\n" >>$LOG_FILE
+
+    export BORG_REPO=""
+    export BORG_PASSPHRASE=""
+    exit 0
+
+>mkdir /var/local/backup/backup_log  
+
+>crontab -e
+
+    30 03 * * * /bin/bash /var/local/backup/backup_script.sh
+
+<br/>**backup remoto**
+
+>borg init ssh://lemp3het@bckp1t4v.scambi:822/home/lemp3het/borg -e repokey (***REMOVED***)  
+
+>nano /var/local/backup/dr_script.sh
+
+    #!/bin/bash
+
+    # variables to configure
+    BKP_STRING="/var/local/backup/raw/"
+    export BORG_REPO="ssh://lemp3het@bckp1t4v.scambi:822/home/lemp3het/borg"
+    export BORG_PASSPHRASE="***REMOVED***"
+
+    # script start
+    LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START EXECUTION" >>$LOG_FILE
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START ARCHIVE CREATION\n" >>$LOG_FILE
+
+    borg create -v --stats --compression lz4 $BORG_REPO::{now:%Y%m%d-%H%M} $BKP_STRING >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - BACKUP ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - START PRUNE\n" >>$LOG_FILE
+    borg prune -v --list $BORG_REPO --keep-daily=7 --keep-weekly=4 >>$LOG_FILE 2>&1
+
+    if [ "$?" = "1" ] ; then
+        echo -e "\n$(date +%Y%m%d-%H%M) - PRUNE ERROR\n" >>$LOG_FILE
+        export BORG_REPO=""
+        export BORG_PASSPHRASE=""
+        exit 1
+    fi
+
+    echo -e "\n$(date +%Y%m%d-%H%M) - END EXECUTION\n" >>$LOG_FILE
+
+    export BORG_REPO=""
+    export BORG_PASSPHRASE=""
+    exit 0
+
+>crontab -e
+
+    45 03 * * * /bin/bash /var/local/backup/dr_script.sh
