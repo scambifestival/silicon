@@ -162,7 +162,7 @@ compilazione sito
     if [[ -z "$updated" ]]
     then
       echo -e "\n$(date +%Y%m%d-%H%M%S) - NOTHING TO DO" >>$LOG_FILE
-      echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION\n" >>$LOG_FILE
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
       exit 0
     else
       rm -rf /home/silicon/crazy.scambi.org/web
@@ -175,18 +175,27 @@ compilazione sito
       sleep 1
       echo -e "\n$(date +%Y%m%d-%H%M%S) - NPM RUN BUILD" >>$LOG_FILE
       npm run build >>$LOG_FILE 2>&1
-      sleep 1
-      echo -e "\n$(date +%Y%m%d-%H%M%S) - RSYNC" >>$LOG_FILE
-      rsync -a --delete /home/silicon/crazy.scambi.org/www/ /var/www/scambiorg/ >>$LOG_FILE 2>&1
-      sleep 1
-      echo -e "\n$(date +%Y%m%d-%H%M%S) - PERMISSIONS" >>$LOG_FILE
-      chown -R silicon:www-data /var/www/scambiorg >>$LOG_FILE 2>&1
-      find /var/www/scambiorg -type d -exec chmod 2775 {} \; >>$LOG_FILE 2>&1
-      find /var/www/scambiorg -type f -exec chmod 664 {} \; >>$LOG_FILE 2>&1
-      echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
-      sleep 1
-      mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org" -- "staff@scambi.org" < "/dev/null"
-      exit 0
+      if [[ $? -eq 0 ]]
+      then
+        sleep 1
+        echo -e "\n$(date +%Y%m%d-%H%M%S) - RSYNC" >>$LOG_FILE
+        rsync -a --delete /home/silicon/crazy.scambi.org/www/ /var/www/scambiorg/ >>$LOG_FILE 2>&1
+        sleep 1
+        echo -e "\n$(date +%Y%m%d-%H%M%S) - PERMISSIONS" >>$LOG_FILE
+        chown -R silicon:www-data /var/www/scambiorg >>$LOG_FILE 2>&1
+        find /var/www/scambiorg -type d -exec chmod 2775 {} \; >>$LOG_FILE 2>&1
+        find /var/www/scambiorg -type f -exec chmod 664 {} \; >>$LOG_FILE 2>&1
+        echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
+        sleep 1
+        mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org" -- "staff@scambi.org, nuciluc@zoho.com" < "/dev/null"
+        exit 0
+      else
+        echo -e "\n$(date +%Y%m%d-%H%M%S) - BUILD ERROR" >>$LOG_FILE
+        echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
+        sleep 1
+        mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org - ERROR" -- "staff@scambi.org, nuciluc@zoho.com" < "/dev/null"
+        exit 1
+      fi
     fi
 
 >crontab -e  
