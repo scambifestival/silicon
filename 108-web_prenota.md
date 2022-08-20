@@ -125,6 +125,18 @@ configurazione pretix
 
 >docker pull pretix/standalone:stable  
 
+>mkdir /root/scambi-pretix  
+>nano /root/scambi-pretix/Dockerfile  
+
+    FROM pretix/standalone:stable
+    USER root
+    RUN pip3 install pretix-fontpack-free
+    USER pretixuser
+    RUN cd /pretix/src && make production
+
+>cd /root/scambi-pretix  
+>docker build . -t scambi-pretix  
+
 >nano /etc/systemd/system/pretix.service
 
     [Unit]
@@ -141,7 +153,7 @@ configurazione pretix
         -v /opt/pretix:/etc/pretix \
         -v /var/run/redis:/var/run/redis \
         --sysctl net.core.somaxconn=4096 \
-        pretix/standalone:stable all
+        scambi-pretix all
     ExecStop=/usr/bin/docker stop %n
 
     [Install]

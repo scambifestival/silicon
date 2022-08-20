@@ -46,6 +46,8 @@ configurazione mutt
     set realname="lemp1see.scambi"
     set from=staff@scambi.org
     set envelope_from=yes
+    set copy = no
+    set folder = ""
 
 >exit
 
@@ -158,7 +160,7 @@ compilazione sito
 
     cd /home/silicon/crazy.scambi.org
 
-    updated=$(git fetch --dry-run)
+    updated=$(git fetch)
     if [[ -z "$updated" ]]
     then
       echo -e "\n$(date +%Y%m%d-%H%M%S) - NOTHING TO DO" >>$LOG_FILE
