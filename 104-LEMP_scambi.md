@@ -13,36 +13,41 @@ tuning swap
 >sysctl --system
 
 installazione pacchetti utili
->apt install screen git gnupg rsync
+>apt install screen git gnupg rsync curl
 
 installazione prerequisiti
->apt install nginx python3-certbot-nginx mariadb-server
+>apt install nginx python3-certbot-nginx mariadb-server msmtp-mta mutt
 
-configurazione mariadb
->mariadb-secure-installation  (vedi Keepass)
+configurazione msmtp
+>nano /etc/msmtprc
 
->mysql -u root
+    defaults
+    auth on
+    tls on  
 
-    CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-    CREATE USER wpuser@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
-    GRANT ALL PRIVILEGES ON wordpress.* TO wpuser@localhost;
-    FLUSH PRIVILEGES;
-    exit
+    account gandi
+    host mail.gandi.net
+    port 587
+    tls_starttls on
+    from staff@scambi.org
+    user staff@scambi.org
+    password abcdef   
 
-tuning mariadb
->nano /etc/mysql/conf.d/zz_performance.cnf  
+    account default : gandi
 
-    [mysqld]
-    performance_schema = on
+>systemctl enable --now msmtpd
 
-    [server]
-    max_connections = 24
-    innodb_buffer_pool_instances = 1
+configurazione mutt
+>su - silicon  
+>nano .muttrc  
 
-    innodb_log_file_size = 32M
-    innodb_buffer_pool_size = 128M
+    set sendmail="/usr/bin/msmtp"
+    set use_from=yes
+    set realname="lemp1see.scambi"
+    set from=staff@scambi.org
+    set envelope_from=yes
 
->systemctl restart mariadb
+>exit
 
 installazione php
 >apt install php-fpm php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-zip php-json php-common php-intl php-bz2 php-gmp php-bcmath php-opcache php-pear php-imagick  
@@ -123,8 +128,6 @@ configurazione nginx
 
 >mkdir /var/www/scambiorg  
 >chown -R silicon:www-data /var/www/scambiorg  
->find /var/www/scambiorg -type d -exec chmod 2775 {} \\;  <br>
->find /var/www/scambiorg -type f -exec chmod 664 {} \\;   
 
 >systemctl restart nginx
 
@@ -136,6 +139,60 @@ modificare file configurazione per TLS
     add_header Strict-Transport-Security "max-age=31536000";
 
 >systemctl restart nginx
+
+compilazione sito
+>curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -  
+>apt install gcc g++ make nodejs
+
+>usermod -a -G www-data silicon  
+>su - silicon  
+>git clone https://github.com/scambifestival/crazy.scambi.org.git  
+
+>nano build-scambiorg.sh
+
+    #!/bin/bash
+
+    LOG_FILE=/home/silicon/scambiorg-build.log
+
+    echo -e "$(date +%Y%m%d-%H%M%S) - START EXECUTION" >$LOG_FILE
+
+    cd /home/silicon/crazy.scambi.org
+
+    updated=$(git fetch --dry-run)
+    if [[ -z "$updated" ]]
+    then
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - NOTHING TO DO" >>$LOG_FILE
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION\n" >>$LOG_FILE
+      exit 0
+    else
+      rm -rf /home/silicon/crazy.scambi.org/web
+      sleep 1
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - GIT PULL" >>$LOG_FILE
+      git pull -q >>$LOG_FILE 2>&1
+      sleep 1
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - NPM CLEAN-INSTALL" >>$LOG_FILE
+      npm clean-install >>$LOG_FILE 2>&1
+      sleep 1
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - NPM RUN BUILD" >>$LOG_FILE
+      npm run build >>$LOG_FILE 2>&1
+      sleep 1
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - RSYNC" >>$LOG_FILE
+      rsync -a --delete /home/silicon/crazy.scambi.org/www/ /var/www/scambiorg/ >>$LOG_FILE 2>&1
+      sleep 1
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - PERMISSIONS" >>$LOG_FILE
+      chown -R silicon:www-data /var/www/scambiorg >>$LOG_FILE 2>&1
+      find /var/www/scambiorg -type d -exec chmod 2775 {} \; >>$LOG_FILE 2>&1
+      find /var/www/scambiorg -type f -exec chmod 664 {} \; >>$LOG_FILE 2>&1
+      echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
+      sleep 1
+      mutt -a $LOG_FILE -s "$(date +%Y%m%d-%H%M) - Build sito scambi.org" -- "staff@scambi.org" < "/dev/null"
+      exit 0
+    fi
+
+>crontab -e  
+
+    */15 * * * * bash /home/silicon/build-scambiorg.sh
+
 
 <br/>**backup locale**
 
@@ -160,7 +217,6 @@ configurazione borg
     sleep 1
 
     /usr/bin/mysqldump --user=root wordpress > /var/local/backup/raw/sql/wordpress.sql
-    /usr/bin/mysqldump --user=root prenota > /var/local/backup/raw/sql/prenota.sql
 
     sleep 1
 
@@ -255,72 +311,6 @@ configurazione borg
 
     30 04 * * * /bin/bash /var/local/backup/dr_script.sh
 
-
-### prenota.scambi.org
-
->mysql -u root -p
-
-    CREATE DATABASE prenota DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-    CREATE USER prenota@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
-    GRANT ALL PRIVILEGES ON prenota.* TO prenota@localhost;
-    FLUSH PRIVILEGES;
-    exit
-
-
->nano /etc/nginx/sites-available/prenota
-
-    server {
-        listen 80;
-        listen [::]:80;
-        server_name prenota.scambi.org;
-        root /var/www/prenota;
-
-        client_max_body_size 8M;
-
-        access_log /var/log/nginx/prenota-access.log;
-        error_log /var/log/nginx/prenota-error.log;
-
-        location / {
-            try_files $uri $uri/ /index.php?args;
-            index index.php index.html;
-        }
-
-        location ~ \.php$ {
-            try_files $uri =404;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include fastcgi_params;
-            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-        }
-
-    }
-
-
->ln -s /etc/nginx/sites-available/prenota /etc/nginx/sites-enabled/
-
->mkdir /var/www/prenota  
->chown -R silicon:www-data /var/www/prenota  
->chmod 2755 /var/www/prenota  
-
->systemctl restart nginx
-
->certbot --nginx -d prenota.scambi.org
-
-modificare file configurazione per TLS  
->nano /etc/nginx/sites-available/prenota
-
-    add_header Strict-Transport-Security "max-age=31536000";
-
->systemctl restart nginx
-
-modifiche wordpress
->find /var/www/prenota -type d -exec chmod 2775 {} \\;  <br>
->find /var/www/prenota -type f -exec chmod 664 {} \\;
-
->nano /var/www/prenota/wp-config.php  
-
-    define('FS_METHOD', 'direct');
-    define('FS_CHMOD_DIR', 0755);
-    define('FS_CHMOD_FILE', 0644);
 
 ### visits.scambi.org
 

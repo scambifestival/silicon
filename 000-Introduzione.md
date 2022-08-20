@@ -27,6 +27,7 @@ Di seguito l’elenco dei server ordinati per IP "interni" (TINC)
 | 192.168.64.5 | stor1see | 22 | storage nextcloud | ***REMOVED*** |
 | 192.168.64.6 | lemp2see | 22 | LEMP collabora | ***REMOVED*** |
 | 192.168.64.7 | data1see | 22 | database baserow | ***REMOVED*** |
+| 192.168.64.8 | lemp3het | 22 | nginx pretix | ***REMOVED*** |
 
 \* 822 - ssh internet | 22 - ssh LAN  
 

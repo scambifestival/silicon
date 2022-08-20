@@ -269,6 +269,7 @@ configurazione borg
 
     <IfModule mod_headers.c>
       Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+      Header set Access-Control-Allow-Origin "*"
     </IfModule>
 
 >systemctl restart apache2
