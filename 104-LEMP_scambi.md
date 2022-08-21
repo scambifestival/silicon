@@ -160,7 +160,7 @@ compilazione sito
 
     cd /home/silicon/crazy.scambi.org
 
-    updated=$(git fetch)
+    updated=$(git fetch --dry-run 2>&1)
     if [[ -z "$updated" ]]
     then
       echo -e "\n$(date +%Y%m%d-%H%M%S) - NOTHING TO DO" >>$LOG_FILE
