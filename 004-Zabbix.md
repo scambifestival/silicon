@@ -1,11 +1,11 @@
 ## Zabbix
 
-Software opensource di monitoraggio infrastrutturale.
-Per semplicità si usano gli agenti installati sui server, configurati per usare solo la LAN virtuale.
+Open source software for infrastructural monitoring.  
+For simplicity purposes, agents installed on servers are used, configured to be using the virtual LAN exclusively.
 
-In questo documento è presente la procedura adottata per installare il server e alcune configurazioni del monitoraggio.
+In this document, it is explained the procedure used to install the server, plus some configurations for monitoring.
 
-<br/> **procedura**
+**procedure**
 
 >wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1%2Bdebian11_all.deb  
 >dpkg -i zabbix-release_6.0-1+debian11_all.deb  
@@ -13,13 +13,13 @@ In questo documento è presente la procedura adottata per installare il server e
 
 >apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent zabbix-sql-scripts mariadb-server  
 
-configurazione mariadb
->mariadb-secure-installation  (vedi Keepass)
+mariadb configuration  
+>mariadb-secure-installation  (see Keepass for the password)
 
 >mysql -u root
 
     CREATE DATABASE zabbix DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
-    CREATE USER zabbix@localhost IDENTIFIED BY 'VEDI-KEEPASS!';
+    CREATE USER zabbix@localhost IDENTIFIED BY 'SEE-KEEPASS!';
     GRANT ALL PRIVILEGES ON zabbix.* TO zabbix@localhost;
     FLUSH PRIVILEGES;
     exit
@@ -28,7 +28,7 @@ configurazione mariadb
 
 >nano /etc/zabbix/zabbix_server.conf  
 
-    DBPassword=VEDI-KEEPASS!
+    DBPassword=SEE-KEEPASS!
 
 >nano /etc/zabbix/apache.conf  
 
@@ -46,21 +46,21 @@ configurazione mariadb
 
 >systemctl restart dnsmasq apache2
 
-collegarsi al web per continuare l'installazione
+connect to the web interface to complete the installation process  
 >http://zabbix.scambi/zabbix
 
-cambiare password user Admin  
->Administration > Users > Admin > Change Password (vedi Keepass)
+change user Admin password  
+>Administration > Users > Admin > Change Password (see Keepass for the password)
 
-<br/> **configurazione template**  
+**template configuration**  
 
-clonare il template "Linux by Zabbix agent" chiamandolo "AA_template_Linux_agent"  
-disattivare i tre Items di tipo "component:os"  
+clone the "Linux by Zabbix agent" template naming it "AA_template_Linux_agent"  
+disable 3 "component:os" items  
 
-abilitare notifiche (dopo aver fatto procedura per bot Telegram)
+enable notifications (after the Telegram bot configuration)  
 >Configuration > Actions > Report problems to Zabbix administrators	> Enabled
 
-per inserire un nuovo host a monitoraggio
+to insert a new host under monitoring  
 >Configuration > Hosts > Create host  
 <br/>inserire hostname  
 inserire "Linux servers" in groups  

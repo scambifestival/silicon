@@ -1,31 +1,33 @@
-## Pilastro LAN Virtuale
+## Virtual LAN pillar
 
-Host con Debian 11, openvpn e dnsmasq primari.
+Debian 11 host, primary openvpn and dnsmasq server.  
 
-I record per LAN Virtuale utilizzano il dominio di primo livello *.scambi*  
-file /etc/dnsmasq.d/dnsmasq.hosts, esempi:
+DNS records for the virtual LAN use the *.scambi* first level domain
+
+file /etc/dnsmasq.d/dnsmasq.hosts, examples:
 
     192.168.64.1    pila1see.scambi
     192.168.64.2    pila2sca.scambi
 
-<br/> **procedura**
 
-password di root : vedi Keepass
+**procedure**
 
-impostare tastiera italiana
+root password : see Keepass database  
+
+set italian keyboard  
 >localectl set-keymap it
 
-impostare hostname
+set hostname
 >hostnamectl set-hostname pila1see
 
-impostare fuso orario e installare chrony per NTP
+set timezone and install chrony for NTP  
 >timedatectl set-timezone Europe/Rome  
 >apt install chrony
 
-generare chiave id_ed25519
+generate id_ed25519 key
 >ssh-keygen -t ed25519
 
-aggiungere swap (consigliato)
+add swap (suggested)
 >dd if=/dev/zero of=/swapfile count=1024 bs=1M status=progress  
 >chmod 600 /swapfile  
 >mkswap /swapfile  
@@ -33,19 +35,19 @@ aggiungere swap (consigliato)
 >echo '/swapfile   none    swap    sw    0   0' | tee -a /etc/fstab  
 >free -m
 
-installare pacchetti utili
+install useful packages  
 >apt install dnsutils unzip screen nano man-db
 
-modifica configurazione ssh
+change ssh configuration  
 >nano /etc/ssh/sshd_config
 
     Port 822
     PermitRootLogin without-password
 
-creare utente di servizio
+create service user
 >adduser silicon (vedi Keepass)
 
-configurazione certification authority per openvpn
+certification authority configuration for openvpn
 >apt install openvpn easy-rsa  
 >cd /etc/openvpn  
 >make-cadir easyrsa  
@@ -76,7 +78,7 @@ configurazione certification authority per openvpn
 >./easyrsa init-pki  
 >./easyrsa build-ca (vedi Keepass - ca.scambi.org)  
 
-generazione certificato server (esempio per vipien1.scambi.org)
+server certificate creation (example for vipien1.scambi.org)  
 >./easyrsa gen-req vipien1.scambi.org nopass  
 >./easyrsa show-req vipien1.scambi.org  
 >./easyrsa sign-req server vipien1.scambi.org  
@@ -88,28 +90,28 @@ generazione certificato server (esempio per vipien1.scambi.org)
 >cp /etc/openvpn/easyrsa/pki/private/vipien1.scambi.org.key /etc/openvpn/server/  
 >cp /etc/openvpn/easyrsa/pki/dh.pem /etc/openvpn/server/  
 
-generazione certificato client
+client certificate creation  
 >./easyrsa gen-req client-USERNAME nopass
 
-oppure con password
+or with password  
 
 >./easyrsa gen-req client-USERNAME
 
-firmare il certificato
+sign the certificate  
 >./easyrsa sign-req client client-USERNAME
 
-per gestire le revoche, occorre eseguire il comando
->./easyrsa revoke client-USERNAME (in caso di necessità)
+to revoke a certificate, you need this command  
+>./easyrsa revoke client-USERNAME (when you need)  
 
-generare il certificato CRL (sia la prima volta, sia dopo aver aggiunto revoche)
+generate CRL certificate (the first time and each time you revoke a certificate)  
 >./easyrsa gen-crl  
 >cp /etc/openvpn/easyrsa/pki/crl.pem /etc/openvpn/server/
 
-per creare file .ovpn, usare "ovpngen" (vedi https://github.com/nuciluc/ovpngen)
+to create .ovpn file, use "ovpngen" (vedi https://github.com/nuciluc/ovpngen)  
 
 >/root/ovpngen vipien1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 1111 udp > /home/silicon/client-USERNAME.ovpn
 
-configurazione openvpn
+openvpn configuration
 
 >nano /etc/openvpn/server.conf
 
@@ -155,10 +157,10 @@ configurazione openvpn
     duplicate-cn
 
 
-abilitare e far partire openvpn
+enable and start openvpn service  
 >systemctl enable --now openvpn@server  
 
-abilitare ip forward
+enable ip forward
 >nano /etc/sysctl.d/88-openvpn.conf
 
     net.ipv4.ip_forward=1
@@ -166,7 +168,7 @@ abilitare ip forward
 >sysctl --system
 
 
-installazione e configurazione tinc
+install and configure tinc  
 >apt install tinc
 
 >mkdir -p /etc/tinc/scambi/hosts  
@@ -211,7 +213,7 @@ installazione e configurazione tinc
     Address = vipien1.scambi.org
     Port = 777
 
-abilitare e far partire tinc
+enable and start tinc service  
 >systemctl enable tinc  
 >mkdir /etc/systemd/system/tinc\@scambi.service.d
 
@@ -223,21 +225,21 @@ abilitare e far partire tinc
 
 >systemctl enable --now tinc@scambi  
 
-configurazione dnsmasq
+dnsmasq configuration  
 >apt install dnsmasq
 
 >nano /etc/default/dnsmasq
 
-  	aggiungere ",.hosts,.resolv" alla variabile CONFIG_DIR
+    add ",.hosts,.resolv" to CONFIG_DIR variable
 
-verificare che nel file /etc/dnsmasq.conf sia decommentato
+check that the line below is decommented in the file /etc/dnsmasq.conf  
 
     conf-dir=/etc/dnsmasq.d/,*.conf
 
 
 >nano /etc/dnsmasq.d/dnsmasq.resolv
 
-    nameserver DNS-FORNITORE
+    nameserver SUPPLIER-DNS
     nameserver 9.9.9.9
 
 >nano /etc/dnsmasq.d/dnsmasq.conf
@@ -277,7 +279,7 @@ verificare che nel file /etc/dnsmasq.conf sia decommentato
 
     # interface
     #interface=lo
-    except-interface=<interfaccia pubblica>
+    except-interface=<public interface>
     # accept dns queries only from address of local subnet
     local-service
     # force binding only on selected interfaces - dynamic
@@ -288,19 +290,19 @@ verificare che nel file /etc/dnsmasq.conf sia decommentato
     # not forward query without fqdn
     domain-needed
 
-modificare /etc/resolv.conf mettendo in testa al file
+edit the file /etc/resolv.conf by inserting the following line at the top  
 
     nameserver 127.0.0.1
 
-modificare /etc/dhcp/dhclient.conf, se presente, decommentando
+edit the file /etc/dhcp/dhclient.conf, if present, by uncommenting the following line  
 
     prepend domain-name-servers 127.0.0.1;
 
-abilitare e far partire il servizio
+enable and start the service  
 >systemctl enable --now dnsmasq  
 >systemctl restart dnsmasq
 
-sul primario occorre impostare un cron job per replicare il file */etc/dnsmasq.d/dnsmasq.hosts*
+on the primary pillar, we need to create a sync cron job for the file */etc/dnsmasq.d/dnsmasq.hosts*  
 >nano /root/sync_dnsmasq.sh
 
     #!/bin/bash
@@ -314,10 +316,10 @@ sul primario occorre impostare un cron job per replicare il file */etc/dnsmasq.d
 
 >chmod +x /root/sync_dnsmasq.sh
 
-applicare regole firewall con firewalld
+apply firewall rules with firewalld  
 >apt install firewalld
 
-verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga qui sotto
+check that the public interface is *eth0*, and edit the following line if it is otherwise  
 
 >firewall-cmd --state  
 >firewall-cmd --permanent --zone=public --add-interface=eth0  
@@ -353,7 +355,7 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 
 >firewall-cmd --reload
 
-configurazione fail2ban
+fail2ban configuration  
 >apt install fail2ban
 
 >nano /etc/fail2ban/jail.d/42-scambi.local
@@ -376,25 +378,25 @@ configurazione fail2ban
 
 >systemctl restart fail2ban
 
-<br/> **prontuario comandi per certificati VPN**
+<br/> **commands handbook for VPN certificates**
 
-###### creare utente
+###### create user  
 >./easyrsa gen-req client-USERNAME nopass  
 
-oppure con password
+or with password  
 
 >./easyrsa gen-req client-USERNAME
 
-firmare il certificato (la password è quella della CA)
+sign the certificate (it asks for CA password)  
 >./easyrsa sign-req client client-USERNAME
 
-per creare file .ovpn, usare "ovpngen" (vedi https://github.com/nuciluc/ovpngen)
+to create .ovpn file, use "ovpngen" (vedi https://github.com/nuciluc/ovpngen)  
 
 >/root/ovpngen vipien1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 1111 udp > /home/silicon/client-USERNAME.ovpn
 
-###### rinnovare utente
+###### renew user  
 
-firmare il certificato (la password è quella della CA)
+sign the certificate (it asks for CA password)  
 >./easyrsa sign-req client client-USERNAME
 
 >/root/ovpngen vipien1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 1111 udp > /home/silicon/client-USERNAME.ovpn

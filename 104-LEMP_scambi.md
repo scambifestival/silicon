@@ -1,10 +1,10 @@
 ## LEMP per scambi.org
 
-<br/> **procedura**
+**procedure**
 
-<br/> seguire template Debian 11
+follow Debian 11 template  
 
-tuning swap
+swap tuning
 >nano /etc/sysctl.d/88-tuning.conf
 
     vm.swappiness = 1
@@ -12,13 +12,13 @@ tuning swap
 
 >sysctl --system
 
-installazione pacchetti utili
+install useful packages  
 >apt install screen git gnupg rsync curl
 
-installazione prerequisiti
+prerequirements installation  
 >apt install nginx python3-certbot-nginx mariadb-server msmtp-mta mutt
 
-configurazione msmtp
+msmtp configuration  
 >nano /etc/msmtprc
 
     defaults
@@ -37,7 +37,7 @@ configurazione msmtp
 
 >systemctl enable --now msmtpd
 
-configurazione mutt
+mutt configuration  
 >su - silicon  
 >nano .muttrc  
 
@@ -51,10 +51,10 @@ configurazione mutt
 
 >exit
 
-installazione php
+php installation  
 >apt install php-fpm php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-zip php-json php-common php-intl php-bz2 php-gmp php-bcmath php-opcache php-pear php-imagick  
 
-configurazione php
+php configuration  
 >nano /etc/php/7.4/fpm/php.ini
 
     date.timezone = Europe/Rome
@@ -81,11 +81,11 @@ configurazione php
 
 >systemctl restart php7.4-fpm
 
-configurazione firewall
+firewall configuration
 >firewall-cmd --permanent --zone=public --add-service={http,https}  
 >firewall-cmd --reload
 
-configurazione nginx
+nginx configuration  
 >nano /etc/nginx/nginx.conf
 
     server_tokens off;
@@ -135,14 +135,14 @@ configurazione nginx
 
 >certbot --nginx -d scambi.org,www.scambi.org
 
-modificare file configurazione per TLS  
+modify configuration file for TLS options  
 >nano /etc/nginx/sites-available/scambiorg
 
     add_header Strict-Transport-Security "max-age=31536000";
 
 >systemctl restart nginx
 
-compilazione sito
+site compilation  
 >curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -  
 >apt install gcc g++ make nodejs
 
@@ -204,11 +204,11 @@ compilazione sito
 
     */15 * * * * bash /home/silicon/build-scambiorg.sh
 
-<br/>**backup locale**
+**backup locale**
 
 >mkdir -p /var/local/backup/raw/{files,sql}  
 
-configurazione borg
+borg configuration  
 >apt install borgbackup  
 >mkdir -p /var/local/backup/borg  
 
@@ -272,7 +272,7 @@ configurazione borg
 
     00 04 * * * /bin/bash /var/local/backup/backup_script.sh
 
-<br/>**backup remoto**
+**remote backup**
 
 >borg init ssh://lemp1see@bckp1t4v.scambi:822/home/lemp1see/borg -e repokey (***REMOVED***)  
 
@@ -369,7 +369,7 @@ configurazione borg
 
 >certbot --nginx -d visits.scambi.org
 
-modificare file configurazione per TLS  
+modify configuration file for TLS options  
 >nano /etc/nginx/sites-available/visits
 
     add_header Strict-Transport-Security "max-age=31536000";

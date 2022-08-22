@@ -1,10 +1,10 @@
 ## Nextcloud
 
-<br/> **procedura**
+**procedure**
 
-<br/> seguire template Debian 11
+follow Debian 11 template  
 
-tuning swap
+swap tuning  
 >nano /etc/sysctl.d/88-tuning.conf
 
     vm.swappiness = 1
@@ -12,22 +12,21 @@ tuning swap
 
 >sysctl --system
 
-installazione pacchetti utili
+install useful packages  
 >apt install screen git gnupg rsync sudo
 
-installazione prerequisiti
+prerequirements installation  
 >apt install apache2 python3-certbot-apache postgresql postgresql-client
 
-configurazione postgresql
+postgresql configuration  
 >sudo -u postgres psql  
 >>CREATE USER nextcloud WITH CREATEDB PASSWORD 'VEDI-KEEPASS!';  
 >>\q
 
-installazione php
-
+php installation  
 >apt install php-fpm php-xml php-cli php-cgi php-pgsql php-mbstring php-gd php-curl php-zip php-json php-common php-intl php-bz2 php-gmp php-bcmath php-apcu php-pear php-ldap php-imagick libmagickcore-6.q16-6-extra  
 
-configurazione php
+php configuration  
 >nano /etc/php/7.4/fpm/php.ini
 
     date.timezone = Europe/Rome
@@ -57,12 +56,11 @@ configurazione php
 
 >systemctl restart php7.4-fpm
 
-configurare firewall
+firewall configuration  
 >firewall-cmd --permanent --zone=public --add-service={http,https}  
 >firewall-cmd --reload
 
-configurazione apache
-
+apache configuration  
 >nano /etc/apache2/conf-available/security.conf
 
     ServerTokens Prod
@@ -111,7 +109,7 @@ configurazione apache
 
     */5  *  *  *  * php7.4 -f /var/www/nextcloud/cron.php
 
-<br/>**backup locale**
+**local backup**
 
 >mkdir -p /var/local/backup/raw/{files,sql}  
 >mkdir -p /var/local/backup/raw/files/var/www/nextcloud
@@ -122,7 +120,7 @@ configurazione apache
 
 >mount -a
 
-configurazione borg
+borg configuration  
 >apt install borgbackup  
 >mkdir -p /var/local/backup/borg  
 
@@ -192,7 +190,7 @@ configurazione borg
 
     00 04 * * * /bin/bash /var/local/backup/backup_script.sh
 
-<br/>**backup remoto**
+**remote backup**
 
 >borg init ssh://stor1see@bckp1t4v.scambi:822/home/stor1see/borg -e repokey (***REMOVED***)  
 
@@ -274,9 +272,9 @@ configurazione borg
 
 >systemctl restart apache2
 
-su Nextcloud abilitare la app "External storage support" e configurare la cartella "x.scambi.org"  
+in Nextcloud you should enable the app "External storage support" and configure the folder "x.scambi.org"  
 
-<br/>**backup locale**
+**local backup**
 
 >mkdir -p /var/local/backup/raw/files/var/www/x  
 

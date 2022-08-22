@@ -1,10 +1,10 @@
-## LEMP per collabora
+## LEMP for collabora
 
-<br/> **procedura**
+**procedure**
 
-<br/> seguire template Debian 11
+follow Debian 11 template  
 
-tuning swap
+swap tuning  
 >nano /etc/sysctl.d/88-tuning.conf
 
     vm.swappiness = 1
@@ -12,7 +12,7 @@ tuning swap
 
 >sysctl --system
 
-repository collabora
+collabora repository  
 >cd /usr/share/keyrings  
 >wget https://collaboraoffice.com/downloads/gpg/collaboraonline-release-keyring.gpg  
 
@@ -25,7 +25,7 @@ repository collabora
 
 >apt update
 
-configurazione collabora
+collabora configuration  
 >apt install coolwsd code-brand  
 >coolconfig set ssl.enable false  
 >coolconfig set ssl.termination true  
@@ -35,11 +35,11 @@ configurazione collabora
 >coolconfig set-admin-password  (vedi Keepass)  
 >systemctl restart coolwsd  
 
-configurazione firewall
+firewall configuration  
 >firewall-cmd --permanent --zone=public --add-service={http,https}  
 >firewall-cmd --reload
 
-configurazione nginx
+nginx configuration  
 >apt install nginx python3-certbot-nginx  
 >nano /etc/nginx/nginx.conf
 
@@ -111,14 +111,14 @@ configurazione nginx
 
 >certbot --nginx -d collabora.scambi.org  
 
-modificare file configurazione per TLS  
+modify configuration file for TLS options  
 >nano /etc/nginx/sites-available/collabora  
 
     add_header Strict-Transport-Security "max-age=31536000";
 
 >systemctl restart nginx
 
-installazione font aggiuntivi
+additional font installation
 >apt install curl ttf-mscorefonts-installer  
 >cd /root  
 >wget http://ftp.it.debian.org/debian/pool/main/f/fonts-inter/fonts-inter_3.19+ds-2_all.deb  
@@ -133,5 +133,5 @@ installazione font aggiuntivi
 
 >coolwsd-systemplate-setup /opt/cool/systemplate /opt/collaboraoffice
 
-test funzionamento  
+test if it works    
 https://collabora.scambi.org/browser/dist/admin/admin.html

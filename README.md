@@ -1,5 +1,5 @@
-# 🔧 Documentazione
+# 🔧 Documentation
 
-La presente repository è un corollario privato al [manuale](https://github.com/scambifestival/manuale '“Scambi Festival - Manuale„ su GitHub') di [Scambi Festival](https://scambi.org 'Scambi Festival'). 
+This repository is a private addendum to the Scambi Festival [manual](https://github.com/scambifestival/manuale).
 
-Contiene le istruzioni per l’installazione e la manutenzione dell’infrastruttura *self-hosted* del festival.
+It contains instructions for the installation and maintenance of the festival's *self-hosted* infrastructure.

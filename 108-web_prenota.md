@@ -1,10 +1,10 @@
-## LEMP per prenota.scambi.org
+## LEMP for prenota.scambi.org
 
-<br/> **procedura**
+**procedure**
 
-<br/> seguire template Debian 11
+follow Debian 11 template  
 
-tuning swap
+swap tuning  
 >nano /etc/sysctl.d/88-tuning.conf
 
     vm.swappiness = 1
@@ -12,13 +12,13 @@ tuning swap
 
 >sysctl --system
 
-installazione pacchetti utili
+install useful packages  
 >apt install screen git gnupg rsync
 
-installazione prerequisiti
+prerequirements installation  
 >apt install nginx python3-certbot-nginx postgresql redis-server docker.io apparmor msmtp-mta
 
-configurazione msmtp
+msmtp configuration  
 >nano /etc/default/msmtpd
 
     INTERFACE=172.17.0.1
@@ -52,8 +52,8 @@ configurazione msmtp
 >systemctl daemon-reload  
 >systemctl enable --now msmtpd
 
-configurazione postgres
->sudo -u postgres createuser pretix -P  (vedi keepass)  
+postgres configuration  
+>sudo -u postgres createuser pretix -P  (see keepass for password)  
 >sudo -u postgres createdb -O pretix pretix
 
 >nano /etc/postgresql/13/main/postgresql.conf
@@ -76,7 +76,7 @@ configurazione postgres
 >systemctl daemon-reload  
 >systemctl restart postgresql
 
-configurazione redis
+redis configuration  
 >nano /etc/redis/redis.conf
 
     unixsocket /var/run/redis/redis.sock
@@ -89,7 +89,7 @@ configurazione redis
 
 >systemctl restart redis
 
-configurazione pretix
+pretix configuration  
 >mkdir /opt/{pretix,pretix-data}  
 >nano /opt/pretix/pretix.cfg
 
@@ -166,12 +166,12 @@ configurazione pretix
 
   */15 * * * * /usr/bin/docker exec pretix.service pretix cron
 
-configurazione firewall
+firewall configuration  
 >firewall-cmd --permanent --zone=public --add-service={http,https}  
 >firewall-cmd --permanent --zone=docker --add-service={smtp,postgresql}  
 >firewall-cmd --reload
 
-configurazione nginx
+nginx configuration  
 >nano /etc/nginx/nginx.conf
 
     server_tokens off;
@@ -201,18 +201,18 @@ configurazione nginx
 
 >certbot --nginx -d prenota.scambi.org
 
-modificare file configurazione per TLS  
+modify configuration file for TLS options  
 >nano /etc/nginx/sites-available/prenota
 
     add_header Strict-Transport-Security "max-age=31536000";
 
 >systemctl restart nginx
 
-<br/>**backup locale**
+**local backup**
 
 >mkdir -p /var/local/backup/raw/{files,sql}  
 
-configurazione borg
+borg configuration  
 >apt install borgbackup  
 >mkdir -p /var/local/backup/raw/{files,sql}
 
@@ -276,7 +276,7 @@ configurazione borg
 
     30 03 * * * /bin/bash /var/local/backup/backup_script.sh
 
-<br/>**backup remoto**
+**remote backup**
 
 >borg init ssh://lemp3het@bckp1t4v.scambi:822/home/lemp3het/borg -e repokey (***REMOVED***)  
 

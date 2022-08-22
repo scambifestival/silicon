@@ -1,10 +1,10 @@
-## database baserow
+## baserow database  
 
-<br/> **procedura**
+**procedure**
 
-<br/> seguire template Debian 11
+follow Debian 11 template  
 
-tuning swap
+swap tuning  
 >nano /etc/sysctl.d/88-tuning.conf
 
     vm.swappiness = 1
@@ -12,17 +12,17 @@ tuning swap
 
 >sysctl --system
 
-installazione prerequisiti
+prerequirements installation  
 >apt install docker.io apparmor
 
-configurazione firewall
+firewall configuration  
 >firewall-cmd --permanent --zone=public --add-service={http,https}  
 >firewall-cmd --reload
 
-configurazione utente silicon
+user silicon configuration  
 >usermod -aG docker silicon
 
-configurazione container
+container configuration  
 >mkdir -p /opt/baserow/data  
 >nano /opt/baserow/custom_baserow_conf.sh
 
@@ -40,11 +40,11 @@ configurazione container
 
 >docker run -d --name baserow-1_11_0 -v /opt/baserow/data:/baserow/data -v /opt/baserow/custom_baserow_conf.sh:/baserow/supervisor/env/custom_baserow_conf.sh -p 80:80 -p 443:443 --restart unless-stopped baserow/baserow:1.11.0
 
-<br/>**backup locale**
+**local backup**
 
 >mkdir -p /var/local/backup/raw  
 
-configurazione borg
+borg configuration  
 >apt install borgbackup  
 >mkdir -p /var/local/backup/borg  
 
@@ -110,7 +110,7 @@ configurazione borg
 
     00 08 * * * /bin/bash /var/local/backup/backup_script.sh
 
-<br/>**backup remoto**
+**remote backup**
 
 >borg init ssh://data1see@bckp1t4v.scambi:822/home/data1see/borg -e repokey (***REMOVED***)  
 

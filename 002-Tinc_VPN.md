@@ -1,11 +1,14 @@
 ## Tinc VPN - Virtual LAN
 
+Software for mesh connections, used to create a virtual LAN.  
+Set the hostname and the internal IP address correctly (see [000-Introduction](000-Introduction.md).)
+
 Software per connessioni mesh, utilizzato per creare una LAN virtuale.  
-Impostare correttamente il nome host e l'indirizzo IP interno 'X' (vedi [000-Introduzione](000-Introduzione.md)).
+Impostare correttamente il nome host e l'indirizzo IP interno 'X' (vedi [000-Introduzione](000-Introduzione.md)).  
 
-Questo documento è per gli host "normali".
+These document is for "normal" servers.  
 
-<br/> **procedura**
+**procedure**
 
 >apt install tinc
 
@@ -51,8 +54,8 @@ Questo documento è per gli host "normali".
     Subnet = 192.168.64.X/32
     Port = 777
 
-copiare scambi/hosts/”nome host” su pila1see  
-copiare scambi/hosts/pila1see su questo host
+copy scambi/hosts/”nome host” on pila1see  
+copy scambi/hosts/pila1see on this host  
 
 >nano scambi/hosts/pila1see-up
 
@@ -68,8 +71,8 @@ copiare scambi/hosts/pila1see su questo host
 
 >chmod +x scambi/hosts/pila1see-*
 
-copiare scambi/hosts/”nome host” su pila2sca  
-copiare scambi/hosts/pila2sca su questo host
+copy scambi/hosts/”nome host” on pila2sca  
+copy scambi/hosts/pila2sca on this host  
 
 >nano scambi/hosts/pila2sca-up
 
@@ -85,8 +88,7 @@ copiare scambi/hosts/pila2sca su questo host
 
 >chmod +x scambi/hosts/pila2sca-*
 
-
-<br/> abilitare e far partire il servizio
+enable and start the service  
 
 >systemctl enable tinc  
 >mkdir /etc/systemd/system/tinc\@scambi.service.d  
@@ -98,13 +100,13 @@ copiare scambi/hosts/pila2sca su questo host
 
 >systemctl enable --now tinc@scambi
 
-<br/> aggiungere record al dns su pila1see
+add DNS records on pila1see
 
-<br/> **tricks**
+**tricks**
 
-avere lista nodi, da leggere poi con il comando *journalctl -u tinc@scambi*
+to have the list of nodes, so we can read it with the command *journalctl -u tinc@scambi*  
 
 >kill -s USR2 “tinc process PID”
 
-purge nodi cancellati
+purge deleted nodes
 >tincd -n scambi -kWINCH

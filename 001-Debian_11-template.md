@@ -1,22 +1,22 @@
-## Template Debian 11
+## Debian 11 template
 
-Template da applicare a tutti gli host, come base comune di partenza.
+This is the template to be applied to all the hosts, as a common starting framework.  
 
-<br/> **procedura**
+**procedure**
 
-password di root : vedi Keepass
+root password : see Keepass database  
 
-impostare tastiera italiana
+set italian keyboard  
 >localectl set-keymap it
 
-impostare fuso orario e installare chrony per NTP
+set timezone and install chrony for NTP  
 >timedatectl set-timezone Europe/Rome  
 >apt install chrony
 
-generare chiave id_ed25519
+generate id_ed25519 key
 >ssh-keygen -t ed25519
 
-aggiungere swap (consigliato)
+add swap (suggested)
 >dd if=/dev/zero of=/swapfile count=1024 bs=1M status=progress  
 >chmod 600 /swapfile  
 >mkswap /swapfile  
@@ -24,23 +24,24 @@ aggiungere swap (consigliato)
 >echo '/swapfile   none    swap    sw    0   0' | tee -a /etc/fstab  
 >free -m
 
-installare pacchetti utili
+install useful packages  
 >apt install dnsutils unzip screen nano man-db
 
-modifica configurazione ssh
+change ssh configuration  
 >nano /etc/ssh/sshd_config
 
-    Port 822 (solo per macchine di frontiera)
+    Port 822 (for border servers only)
     PermitRootLogin without-password
 
-creare utente di servizio
->adduser silicon (vedi Keepass)
+create service user
+>adduser silicon (see Keepass database for the password)
 
-dopo aver installato e configurato [tinc](002-Tinc_VPN.md)
-- installare e configurare [dnsmasq](003-dnsmasq.md) che ascolti solo in localhost <br/>
-- aggiungere 127.0.0.1 in testa al file /etc/resolv.conf
 
-configurazione agente zabbix
+after [tinc](002-Tinc_VPN.md) installation and configuration  
+- install and configure [dnsmasq](003-dnsmasq.md) so that it listens on localhost only  
+- add 127.0.0.1 on the top of the file /etc/resolv.conf  
+
+zabbix agent configuration  
 >wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1%2Bdebian11_all.deb  
 >dpkg -i zabbix-release_6.0-1+debian11_all.deb  
 >apt update  
@@ -55,10 +56,10 @@ configurazione agente zabbix
 >systemctl enable --now zabbix-agent  
 >systemctl restart zabbix-agent  
 
-applicare regole firewall con firewalld
+apply firewall rules with firewalld  
 >apt install firewalld
 
-verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga qui sotto
+check that the public interface is *eth0*, and edit the following line if it is otherwise  
 
 >firewall-cmd --state  
 >firewall-cmd --permanent --zone=public --add-interface=eth0  
@@ -82,8 +83,8 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 >firewall-cmd --reload  
 
 
-##### per macchine di frontiera (porta ssh modificata) <br/>
-<br/> configurazione firewall
+##### for border servers (custom ssh port)  
+firewall configuration  
 >firewall-cmd --permanent --new-service=aa_ssh  
 >firewall-cmd --permanent --service=aa_ssh --set-description='custom ssh'  
 >firewall-cmd --permanent --service=aa_ssh --add-port=822/tcp  
@@ -92,7 +93,7 @@ verificare che l'interfaccia pubblica sia *eth0*, altrimenti modificare la riga 
 >firewall-cmd --permanent --zone=internal --remove-service=ssh  
 >firewall-cmd --reload  
 
-configurazione fail2ban
+fail2ban configuration  
 >apt install fail2ban  
 >nano /etc/fail2ban/jail.d/42-scambi.local  
 
@@ -114,5 +115,5 @@ configurazione fail2ban
 
 >systemctl restart fail2ban
 
-<br/> **comandi utili**
+**useful commands**  
 >fail2ban-client status sshd

@@ -1,12 +1,12 @@
 ## Backup
 
-time4vps non supporta ancora Debian 11 sui VPS storage, installato Debian 9
+time4vps does not support Debian 11 on storage VPS, we installed Debian 9
 
-<br/> **procedura**
+**procedure**
 
-seguire template Debian 11
+follow Debian 11 template
 
-fix dns e hostname
+fix dns and hostname
 >nano /root/resolv.conf
 
     nameserver 127.0.0.1
@@ -23,7 +23,7 @@ fix locale
 >dpkg-reconfigure locales
 >>selezionare it_IT.UTF-8
 
-installazione pacchetti utili
+install useful packages  
 >nano /etc/apt/sources.list
 
     deb http://deb.debian.org/debian stretch-backports main contrib non-free
@@ -32,8 +32,8 @@ installazione pacchetti utili
 >apt install rsync iftop screen  
 >apt install -t stretch-backports borgbackup  
 
-configurazione utente per ogni server  
-esempio:
+user configuration for each server  
+example:
 
     adduser --disabled-password --gecos "" --uid 2004 lemp1see
     mkdir -p /home/lemp1see/{backup,borg,log}

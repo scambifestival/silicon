@@ -1,19 +1,19 @@
 ## dnsmasq
 
-Software leggero che può fare sia da DNS server/cache sia da DHCP.  
-Nella LAN virtuale si usa solo la parte DNS, per risolvere i nomi interni con dominio di primo livello *.scambi* (non è un Top-Level Domain)
+Light software that can act both as DNS server/cache and as DHCP server.  
+In the virtual LAN, only the DNS part is used, in order to resolve internal names with first-level domain *.scambi* (not a TLD).  
 
-Questo documento è per gli host "normali".
+These document is for "normal" servers.  
 
-<br/> **procedura**
+**procedure**
 
 > apt install dnsmasq
 
 >nano /etc/default/dnsmasq
 
-  	aggiungere ",.hosts,.resolv" alla variabile CONFIG_DIR
+  	add ",.hosts,.resolv" to CONFIG_DIR variable
 
-verificare che nel file /etc/dnsmasq.conf sia decommentato
+check that the line below is decommented in the file /etc/dnsmasq.conf  
 
     conf-dir=/etc/dnsmasq.d/,*.conf
 
@@ -53,20 +53,20 @@ verificare che nel file /etc/dnsmasq.conf sia decommentato
     # not forward query without fqdn
     domain-needed
 
-modificare /etc/resolv.conf mettendo in testa al file
+edit the file /etc/resolv.conf by inserting the following line at the top  
 
     nameserver 127.0.0.1
 
-modificare /etc/dhcp/dhclient.conf, se presente, decommentando
+edit the file /etc/dhcp/dhclient.conf, if present, by uncommenting the following line  
 
     prepend domain-name-servers 127.0.0.1;
 
-abilitare e far partire il servizio
+enable and start the service  
 >systemctl enable --now dnsmasq  
 >systemctl restart dnsmasq
 
 
-<br/> **contabo - fix DNS**
+**contabo - fix DNS**
 
 nano /etc/network/interfaces
 
@@ -82,7 +82,7 @@ nano /etc/network/interfaces
 
 >ls -l /etc/resolv.conf
 
-se */etc/resolv.conf* è un link simbolico:
+if the file */etc/resolv.conf* is a symbolic link:  
 >rm /etc/resolv.conf
 
 >nano /etc/resolv.conf
