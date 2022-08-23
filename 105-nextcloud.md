@@ -33,7 +33,9 @@ php configuration
 
     memory_limit = 1024M
 
-    upload_max_filesize = 513M
+    post_max_size = 16G
+
+    upload_max_filesize = 16GB
 
     opcache.enable=1
     opcache.interned_strings_buffer=8

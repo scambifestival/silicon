@@ -3,9 +3,6 @@
 Software for mesh connections, used to create a virtual LAN.  
 Set the hostname and the internal IP address correctly (see [000-Introduction](000-Introduction.md).)
 
-Software per connessioni mesh, utilizzato per creare una LAN virtuale.  
-Impostare correttamente il nome host e l'indirizzo IP interno 'X' (vedi [000-Introduzione](000-Introduzione.md)).  
-
 These document is for "normal" servers.  
 
 **procedure**

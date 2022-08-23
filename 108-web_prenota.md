@@ -1,4 +1,4 @@
-## LEMP for prenota.scambi.org
+## web server for prenota.scambi.org
 
 **procedure**
 

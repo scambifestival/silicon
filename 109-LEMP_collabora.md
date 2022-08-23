@@ -130,6 +130,7 @@ additional font installation
 >unzip LondrinaSolid.zip -d /usr/share/fonts/googlefonts/ -x OFL.txt  
 >chmod -R --reference=/usr/share/fonts/opentype /usr/share/fonts/googlefonts  
 >fc-cache -fv  
+>systemctl restart coolwsd  
 
 >coolwsd-systemplate-setup /opt/cool/systemplate /opt/collaboraoffice
 
