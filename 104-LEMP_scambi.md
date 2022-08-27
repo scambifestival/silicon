@@ -122,6 +122,8 @@ nginx configuration
             fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
         }
 
+        error_page 404 403 /404.html;
+
     }
 
 
