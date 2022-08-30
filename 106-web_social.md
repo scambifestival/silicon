@@ -102,7 +102,7 @@ ruby installation
 >>*press enter for postgresql and redis options*  
 >>Do you want to store uploaded files on the cloud? (y/N) **n**  
 >>Do you want to send e-mails from localhost? (y/N) **y**  
->>E-mail address to send e-mails "from": (Mastodon \<notifications@social.scambi.org\>) **Social Scambi.org \<staff@scambi.org\>**  
+>>E-mail address to send e-mails "from": (Mastodon \<notifications@social.scambi.org\>) **Pan \<staff@scambi.org\>**  
 >>Send a test e-mail with this configuration right now? **n**  
 >>Save configuration? (Y/n) **y**  
 >>Prepare the database now? (Y/n) **y**  
