@@ -150,7 +150,7 @@ site compilation
 
 >usermod -a -G www-data silicon  
 >su - silicon  
->git clone https://github.com/scambifestival/crazy.scambi.org.git  
+>git clone https://github.com/scambifestival/scambi.org.git  
 
 >nano build-scambiorg.sh
 
@@ -160,7 +160,7 @@ site compilation
 
     echo -e "$(date +%Y%m%d-%H%M%S) - START EXECUTION" >$LOG_FILE
 
-    cd /home/silicon/crazy.scambi.org
+    cd /home/silicon/scambi.org
 
     updated=$(git fetch --dry-run 2>&1)
     if [[ -z "$updated" ]]
@@ -169,7 +169,7 @@ site compilation
       echo -e "\n$(date +%Y%m%d-%H%M%S) - END EXECUTION" >>$LOG_FILE
       exit 0
     else
-      rm -rf /home/silicon/crazy.scambi.org/web
+      rm -rf /home/silicon/scambi.org/web
       sleep 1
       echo -e "\n$(date +%Y%m%d-%H%M%S) - GIT PULL" >>$LOG_FILE
       git pull -q >>$LOG_FILE 2>&1
@@ -183,7 +183,7 @@ site compilation
       then
         sleep 1
         echo -e "\n$(date +%Y%m%d-%H%M%S) - RSYNC" >>$LOG_FILE
-        rsync -a --delete /home/silicon/crazy.scambi.org/www/ /var/www/scambiorg/ >>$LOG_FILE 2>&1
+        rsync -a --delete /home/silicon/scambi.org/www/ /var/www/scambiorg/ >>$LOG_FILE 2>&1
         sleep 1
         echo -e "\n$(date +%Y%m%d-%H%M%S) - PERMISSIONS" >>$LOG_FILE
         chown -R silicon:www-data /var/www/scambiorg >>$LOG_FILE 2>&1
