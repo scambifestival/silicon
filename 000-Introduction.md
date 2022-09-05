@@ -20,14 +20,14 @@ Below is the list of servers sorted by 'internal' IP (TINC)
 
 | IP TINC | hostname | ssh * | role | public IP |
 | --- | --- | --- | --- | --- |
-| 192.168.64.1 | pila1see | 822 | vipien1 | ***REMOVED*** |
-| 192.168.64.2 | pila2sca | 822 | vipien2 | ***REMOVED*** |
-| 192.168.64.3 | bckp1t4v | 822 | backup | ***REMOVED*** |
-| 192.168.64.4 | lemp1see | 22 | LEMP scambi.org | ***REMOVED*** |
-| 192.168.64.5 | stor1see | 22 | storage nextcloud | ***REMOVED*** |
-| 192.168.64.6 | lemp2see | 22 | LEMP collabora | ***REMOVED*** |
-| 192.168.64.7 | data1see | 22 | database baserow | ***REMOVED*** |
-| 192.168.64.8 | lemp3het | 22 | nginx pretix | ***REMOVED*** |
+| 192.168.64.1 | pila1see | 822 | vipien1 |  |
+| 192.168.64.2 | pila2sca | 822 | vipien2 |  |
+| 192.168.64.3 | bckp1t4v | 822 | backup |  |
+| 192.168.64.4 | lemp1see | 22 | LEMP scambi.org |  |
+| 192.168.64.5 | stor1see | 22 | storage nextcloud |  |
+| 192.168.64.6 | lemp2see | 22 | LEMP collabora |  |
+| 192.168.64.7 | data1see | 22 | database baserow |  |
+| 192.168.64.8 | lemp3het | 22 | nginx pretix |  |
 
 \* 822 - ssh internet | 22 - ssh LAN  
 

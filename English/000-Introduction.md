@@ -17,12 +17,12 @@ Below the list of the servers, ordered according to “internal” (TINC) IPs.
 
 | TINC IP      | hostname | ssh <sup>*</sup> | role              | Public IP       |
 | ---          | ---      | ---              | ---               | ---             |
-| 192.168.64.1 | pila1see | 822              | vipien1           | ***REMOVED***  |
-| 192.168.64.2 | pila2sca | 822              | vipien2           | ***REMOVED*** |
-| 192.168.64.3 | bckp1t4v | 822              | backup            | ***REMOVED***  |
-| 192.168.64.4 | lemp1see | 22               | LEMP scambi.org   | ***REMOVED***  |
-| 192.168.64.5 | stor1see | 22               | storage nextcloud | ***REMOVED***  |
-| 192.168.64.6 | lemp2see | 22               | LEMP collabora    | ***REMOVED***  |
+| 192.168.64.1 | pila1see | 822              | vipien1           |   |
+| 192.168.64.2 | pila2sca | 822              | vipien2           |   |
+| 192.168.64.3 | bckp1t4v | 822              | backup            |   |
+| 192.168.64.4 | lemp1see | 22               | LEMP scambi.org   |   |
+| 192.168.64.5 | stor1see | 22               | storage nextcloud |   |
+| 192.168.64.6 | lemp2see | 22               | LEMP collabora    |   |
 
 \* 822 - ssh internet | 22 - ssh LAN
 
