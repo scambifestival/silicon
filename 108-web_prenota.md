@@ -216,7 +216,7 @@ borg configuration
 >apt install borgbackup  
 >mkdir -p /var/local/backup/raw/{files,sql}
 
->borg init /var/local/backup/borg -e repokey (***REMOVED***)  
+>borg init /var/local/backup/borg -e repokey (see Keepass database)  
 
 >nano /var/local/backup/backup_script.sh
 
@@ -237,7 +237,7 @@ borg configuration
     # variables to configure
     BKP_STRING="/var/local/backup/raw/"
     export BORG_REPO="/var/local/backup/borg"
-    export BORG_PASSPHRASE="***REMOVED***"
+    export BORG_PASSPHRASE="see Keepass database"
 
     # script start
     LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"
@@ -278,7 +278,7 @@ borg configuration
 
 **remote backup**
 
->borg init ssh://lemp3het@bckp1t4v.scambi:822/home/lemp3het/borg -e repokey (***REMOVED***)  
+>borg init ssh://lemp3het@bckp1t4v.scambi:822/home/lemp3het/borg -e repokey (see Keepass database)  
 
 >nano /var/local/backup/dr_script.sh
 
@@ -287,7 +287,7 @@ borg configuration
     # variables to configure
     BKP_STRING="/var/local/backup/raw/"
     export BORG_REPO="ssh://lemp3het@bckp1t4v.scambi:822/home/lemp3het/borg"
-    export BORG_PASSPHRASE="***REMOVED***"
+    export BORG_PASSPHRASE="see Keepass database"
 
     # script start
     LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"

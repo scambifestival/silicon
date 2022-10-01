@@ -40,5 +40,5 @@ example:
     echo "borg repo directly from host" > /home/lemp1see/backup/README
     mkdir /home/lemp1see/.ssh
     nano /home/lemp1see/.ssh/authorized_keys
-    command="borg serve --restrict-to-path /home/lemp1see/borg",restrict {chiave ssh}
+    command="borg serve --restrict-to-path /home/lemp1see/borg",restrict {insert here the ssh key}
     chown -R lemp1see: /home/lemp1see

@@ -276,7 +276,7 @@ borg configuration
 
 **remote backup**
 
->borg init ssh://lemp1see@bckp1t4v.scambi:822/home/lemp1see/borg -e repokey (***REMOVED***)  
+>borg init ssh://lemp1see@bckp1t4v.scambi:822/home/lemp1see/borg -e repokey (see Keepass database)  
 
 >nano /var/local/backup/dr_script.sh
 
@@ -285,7 +285,7 @@ borg configuration
     # variables to configure
     BKP_STRING="/var/local/backup/raw/"
     export BORG_REPO="ssh://lemp1see@bckp1t4v.scambi:822/home/lemp1see/borg"
-    export BORG_PASSPHRASE="***REMOVED***"
+    export BORG_PASSPHRASE="see Keepass database"
 
     # script start
     LOG_FILE="$(dirname $0)/backup_log/$(date +%Y%m)_$(basename $0 .sh).log"

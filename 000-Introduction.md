@@ -25,9 +25,10 @@ Below is the list of servers sorted by 'internal' IP (TINC)
 | 192.168.64.3 | bckp1t4v | 822 | backup |  |
 | 192.168.64.4 | lemp1see | 22 | LEMP scambi.org |  |
 | 192.168.64.5 | stor1see | 22 | storage nextcloud |  |
-| 192.168.64.6 | lemp2see | 22 | LEMP collabora |  |
+| 192.168.64.6 | lemp2see | 22 | LEMP pan (mastodon) |  |
 | 192.168.64.7 | data1see | 22 | database baserow |  |
-| 192.168.64.8 | lemp3het | 22 | nginx pretix |  |
+| 192.168.64.8 |  | 22 |  |  |
+| 192.168.64.9 | lemp4het | 22 | nginx collabora |  |
 
 \* 822 - ssh internet | 22 - ssh LAN  
 
