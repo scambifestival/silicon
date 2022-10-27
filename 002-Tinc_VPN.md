@@ -1,7 +1,7 @@
 ## Tinc VPN - Virtual LAN
 
 Software for mesh connections, used to create a virtual LAN.  
-Set the hostname and the internal IP address correctly (see [000-Introduction](000-Introduction.md).)
+Set the hostname and the internal IP address correctly (see [000-Introduction](README.md).)
 
 These document is for "normal" servers.  
 
