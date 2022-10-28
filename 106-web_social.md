@@ -141,6 +141,13 @@ uncomment certificate parameters in the file /etc/nginx/sites-available/social
 
 finish the configuration on https://social.scambi.org
 
+fix crontab
+>crontab -e
+
+    0 4 * * * RAILS_ENV=production /home/mastodon/live/bin/tootctl media remove
+    0 5 * * * RAILS_ENV=production /home/mastodon/live/bin/tootctl preview_cards remove
+
+
 **local backup**
 
 **remote backup**
