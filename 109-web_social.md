@@ -8,7 +8,7 @@ swap tuning
 >nano /etc/sysctl.d/88-tuning.conf
 
     vm.swappiness = 1
-    vm.vfs_cache_pressure = 150
+    vm.vfs_cache_pressure = 200
 
 >sysctl --system
 
@@ -88,7 +88,7 @@ ruby installation
 >cd  
 >git clone https://github.com/tootsuite/mastodon.git live  
 >cd live  
->git checkout $(git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)  
+>    git checkout $(git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)  
 
 >bundle config deployment 'true'  
 >bundle config without 'development test'  
@@ -144,8 +144,8 @@ finish the configuration on https://social.scambi.org
 fix crontab
 >crontab -e
 
-    0 4 * * * RAILS_ENV=production /home/mastodon/live/bin/tootctl media remove
-    0 5 * * * RAILS_ENV=production /home/mastodon/live/bin/tootctl preview_cards remove
+    0 4 * * * RAILS_ENV=production /home/mastodon/live/bin/tootctl media remove --days 3
+    0 5 * * * RAILS_ENV=production /home/mastodon/live/bin/tootctl preview_cards remove --days 15
 
 
 **local backup**
