@@ -1,8 +1,8 @@
-## web server for social.scambi.org
+# Web server for social.scambi.org
 
-**procedure**
+## Procedure
 
-follow Debian 11 template  
+Follow [Debian 11 template](001-Debian_11-template.md)
 
 swap tuning  
 >nano /etc/sysctl.d/88-tuning.conf

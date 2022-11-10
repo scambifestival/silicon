@@ -1,11 +1,11 @@
-## dnsmasq
+# dnsmasq
 
 Light software that can act both as DNS server/cache and as DHCP server.  
-In the virtual LAN, only the DNS part is used, in order to resolve internal names with first-level domain *.scambi* (not a TLD).  
+In the virtual LAN, only the DNS part is used, in order to resolve internal names with first-level domain *.scambi* (not a TLD).
 
 These document is for "normal" servers.  
 
-**procedure**
+## Procedure
 
 > apt install dnsmasq
 
@@ -66,7 +66,7 @@ enable and start the service
 >systemctl restart dnsmasq
 
 
-**contabo - fix DNS**
+## Fix DNS - Contabo
 
 nano /etc/network/interfaces
 

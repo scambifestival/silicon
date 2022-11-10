@@ -1,4 +1,4 @@
-## Virtual LAN pillar
+# Virtual LAN pillar
 
 Debian 11 host, primary openvpn and dnsmasq server.  
 
@@ -6,11 +6,12 @@ DNS records for the virtual LAN use the *.scambi* first level domain
 
 file /etc/dnsmasq.d/dnsmasq.hosts, examples:
 
-    192.168.64.1    pila1see.scambi
-    192.168.64.2    pila2sca.scambi
+```
+192.168.64.1    pila1see.scambi
+192.168.64.2    pila2sca.scambi
+```
 
-
-**procedure**
+## Procedure
 
 root password : see Keepass database  
 
@@ -41,8 +42,10 @@ install useful packages
 change ssh configuration  
 >nano /etc/ssh/sshd_config
 
-    Port 822
-    PermitRootLogin without-password
+```
+Port 822
+PermitRootLogin without-password
+```
 
 create service user
 >adduser silicon (vedi Keepass)
@@ -55,23 +58,25 @@ certification authority configuration for openvpn
 
 >nano vars
 
-    set_var EASYRSA                 "${0%/*}"
-    set_var EASYRSA_PKI             "$PWD/pki"
-    set_var EASYRSA_DN              "org"
-    set_var EASYRSA_REQ_COUNTRY     "IT"
-    set_var EASYRSA_REQ_PROVINCE    "IM"
-    set_var EASYRSA_REQ_CITY        "Sanremo"
-    set_var EASYRSA_REQ_ORG         "scambi"
-    set_var EASYRSA_REQ_EMAIL       "info@scambi.org"
-    set_var EASYRSA_REQ_OU          "Staff"
-    set_var EASYRSA_KEY_SIZE        4096
-    set_var EASYRSA_ALGO            rsa
-    set_var EASYRSA_CA_EXPIRE       3650
-    set_var EASYRSA_CERT_EXPIRE     365
-    set_var EASYRSA_CRL_DAYS        3650
-    set_var EASYRSA_NS_SUPPORT      "no"
-    set_var EASYRSA_NS_COMMENT      "SCAMBI CERTIFICATE AUTHORITY"
-    set_var EASYRSA_EXT_DIR         "$EASYRSA/x509-types"
+```
+set_var EASYRSA                 "${0%/*}"
+set_var EASYRSA_PKI             "$PWD/pki"
+set_var EASYRSA_DN              "org"
+set_var EASYRSA_REQ_COUNTRY     "IT"
+set_var EASYRSA_REQ_PROVINCE    "IM"
+set_var EASYRSA_REQ_CITY        "Sanremo"
+set_var EASYRSA_REQ_ORG         "scambi"
+set_var EASYRSA_REQ_EMAIL       "info@scambi.org"
+set_var EASYRSA_REQ_OU          "Staff"
+set_var EASYRSA_KEY_SIZE        4096
+set_var EASYRSA_ALGO            rsa
+set_var EASYRSA_CA_EXPIRE       3650
+set_var EASYRSA_CERT_EXPIRE     365
+set_var EASYRSA_CRL_DAYS        3650
+set_var EASYRSA_NS_SUPPORT      "no"
+set_var EASYRSA_NS_COMMENT      "SCAMBI CERTIFICATE AUTHORITY"
+set_var EASYRSA_EXT_DIR         "$EASYRSA/x509-types"
+```
 
 
 >chmod +x vars  
@@ -115,46 +120,48 @@ openvpn configuration
 
 >nano /etc/openvpn/server.conf
 
-    port 1111
-    proto udp
-    dev tun
+```
+port 1111
+proto udp
+dev tun
 
-    ca /etc/openvpn/server/ca.crt
-    cert /etc/openvpn/server/vipien1.scambi.org.crt
-    key /etc/openvpn/server/vipien1.scambi.org.key
-    dh /etc/openvpn/server/dh.pem
-    crl-verify /etc/openvpn/server/crl.pem
+ca /etc/openvpn/server/ca.crt
+cert /etc/openvpn/server/vipien1.scambi.org.crt
+key /etc/openvpn/server/vipien1.scambi.org.key
+dh /etc/openvpn/server/dh.pem
+crl-verify /etc/openvpn/server/crl.pem
 
-    server 192.168.66.0 255.255.255.0
+server 192.168.66.0 255.255.255.0
 
-    keepalive 10 120
+keepalive 10 120
 
-    #comp-lzo
-    persist-key
-    persist-tun
+#comp-lzo
+persist-key
+persist-tun
 
-    status openvpn-status.log
-    verb 3
+status openvpn-status.log
+verb 3
 
-    #client-to-client
+#client-to-client
 
-    tls-crypt /etc/openvpn/server/ta.key
+tls-crypt /etc/openvpn/server/ta.key
 
-    cipher AES-256-CBC
-    auth SHA512
-    tls-version-min 1.2
-    tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA:TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA
-    ncp-ciphers AES-256-GCM:AES-256-CBC
+cipher AES-256-CBC
+auth SHA512
+tls-version-min 1.2
+tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA:TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA
+ncp-ciphers AES-256-GCM:AES-256-CBC
 
-    push "route 192.168.64.0 255.255.255.0"
-    push "dhcp-option DNS 192.168.66.1"
-    #push "redirect-gateway def1 bypass-dhcp"
-    #push "redirect-gateway def1"
+push "route 192.168.64.0 255.255.255.0"
+push "dhcp-option DNS 192.168.66.1"
+#push "redirect-gateway def1 bypass-dhcp"
+#push "redirect-gateway def1"
 
-    user nobody
-    group nogroup
+user nobody
+group nogroup
 
-    duplicate-cn
+duplicate-cn
+```
 
 
 enable and start openvpn service  
@@ -163,7 +170,9 @@ enable and start openvpn service
 enable ip forward
 >nano /etc/sysctl.d/88-openvpn.conf
 
-    net.ipv4.ip_forward=1
+```
+net.ipv4.ip_forward=1
+```
 
 >sysctl --system
 
@@ -176,20 +185,24 @@ install and configure tinc
 
 >nano nets.boot
 
-    scambi
+```
+scambi
+````
 
 >nano scambi/tinc.conf
 
-    Name=pila1see
-    Device=/dev/net/tun
-    AddressFamily=ipv4
-    Mode=switch
-    Port=777
+```
+Name=pila1see
+Device=/dev/net/tun
+AddressFamily=ipv4
+Mode=switch
+Port=777
 
-    Cipher=aes-256-cbc
-    Digest=SHA512
+Cipher=aes-256-cbc
+Digest=SHA512
 
-    #ConnectTo=pila2sca
+#ConnectTo=pila2sca
+```
 
 >nano scambi/tinc-up
 
@@ -378,9 +391,10 @@ fail2ban configuration
 
 >systemctl restart fail2ban
 
-<br/> **commands handbook for VPN certificates**
+## commands handbook for VPN certificates
 
-###### create user  
+### create user  
+
 >./easyrsa gen-req client-USERNAME nopass  
 
 or with password  
@@ -394,7 +408,7 @@ to create .ovpn file, use "ovpngen" (vedi https://github.com/nuciluc/ovpngen)
 
 >/root/ovpngen vipien1.scambi.org /etc/openvpn/server/ca.crt /etc/openvpn/easyrsa/pki/issued/client-USERNAME.crt /etc/openvpn/easyrsa/pki/private/client-USERNAME.key /etc/openvpn/server/ta.key 1111 udp > /home/silicon/client-USERNAME.ovpn
 
-###### renew user  
+### renew user  
 
 sign the certificate (it asks for CA password)  
 >./easyrsa sign-req client client-USERNAME
