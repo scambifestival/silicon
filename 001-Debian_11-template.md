@@ -41,9 +41,9 @@ Create service user
 After [tinc installation and configuration](002-Tinc_VPN.md):
 
 - [install and configure dnsmasq](003-dnsmasq.md) so that it listens on localhost only
-- add 127.0.0.1 on the top of the file /etc/resolv.conf
+- add `127.0.0.1` on the top of the file `/etc/resolv.conf`
 
-## Zabbix agent configuration
+## Zabbix agent configuration
 
 >wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1%2Bdebian11_all.deb  
 >dpkg -i zabbix-release_6.0-1+debian11_all.deb  
@@ -52,9 +52,11 @@ After [tinc installation and configuration](002-Tinc_VPN.md):
 
 >nano /etc/zabbix/zabbix_agentd.conf
 
-    server = zabbix.scambi  
-    server active = zabbix.scambi  
-    hostname =
+```
+server = zabbix.scambi  
+server active = zabbix.scambi  
+hostname =
+```
 
 >systemctl enable --now zabbix-agent  
 >systemctl restart zabbix-agent  

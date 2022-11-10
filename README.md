@@ -1,6 +1,3 @@
----
-description: This repository contains instructions for the installation and maintenance of Scambi Festival self-hosted infrastructure.
----
 # Introduction
 
 All of the servers have a public IP where they provide the services.
