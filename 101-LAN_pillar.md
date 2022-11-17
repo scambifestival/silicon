@@ -80,6 +80,7 @@ set_var EASYRSA_EXT_DIR         "$EASYRSA/x509-types"
 
 
 >chmod +x vars  
+>export EASYRSA=$(pwd)  
 >./easyrsa init-pki  
 >./easyrsa build-ca (vedi Keepass - ca.scambi.org)  
 
