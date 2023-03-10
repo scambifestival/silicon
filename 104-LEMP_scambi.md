@@ -121,6 +121,11 @@ nginx configuration
             include fastcgi_params;
             fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
         }
+        
+        location ~* .(?:webp|jpg|png|svg)$ {
+            expires 1y;
+            add_header Cache-Control "public";
+        }
 
         error_page 404 403 /404.html;
 
