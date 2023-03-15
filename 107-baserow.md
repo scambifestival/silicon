@@ -54,7 +54,7 @@ borg configuration
 
     #!/bin/bash
 
-    export BASEROW_NAME=baserow-1_11_0
+    export BASEROW_NAME=baserow-1_15_1
 
     /usr/bin/docker stop $BASEROW_NAME >/dev/null
 
