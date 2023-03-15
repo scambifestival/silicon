@@ -38,7 +38,7 @@ container configuration
 
 >chmod +x /opt/baserow/custom_baserow_conf.sh  
 
->docker run -d --name baserow-1_11_0 -v /opt/baserow/data:/baserow/data -v /opt/baserow/custom_baserow_conf.sh:/baserow/supervisor/env/custom_baserow_conf.sh -p 80:80 -p 443:443 --restart unless-stopped baserow/baserow:1.11.0
+>docker run -d --name baserow-1_15_1 -v /opt/baserow/data:/baserow/data -v /opt/baserow/custom_baserow_conf.sh:/baserow/supervisor/env/custom_baserow_conf.sh -p 80:80 -p 443:443 --restart unless-stopped baserow/baserow:1.15.1
 
 **local backup**
 
