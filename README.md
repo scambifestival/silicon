@@ -32,7 +32,6 @@ The naming convention for hostnames is as follows:
 | 192.168.64.6 | lemp2see | 22      | Nginx Collabora       |           |
 | 192.168.64.7 | data1see | 22      | database Baserow      |           |
 | 192.168.64.8 |          | 22      |                       |           |
-| 192.168.64.9 | lemp4het | 22      | LEMP *Pan* (Mastodon) |           |
 
 ## Suppliers list
 
