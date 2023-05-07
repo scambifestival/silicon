@@ -38,7 +38,7 @@ container configuration
 
 >chmod +x /opt/baserow/custom_baserow_conf.sh  
 
->docker run -d --name baserow-1_15_1 -v /opt/baserow/data:/baserow/data -v /opt/baserow/custom_baserow_conf.sh:/baserow/supervisor/env/custom_baserow_conf.sh -p 80:80 -p 443:443 --restart unless-stopped baserow/baserow:1.15.1
+>docker run -d --name baserow-latest -v /opt/baserow/data:/baserow/data -v /opt/baserow/custom_baserow_conf.sh:/baserow/supervisor/env/custom_baserow_conf.sh -p 80:80 -p 443:443 --restart unless-stopped baserow/baserow:latest
 
 **local backup**
 
@@ -110,6 +110,7 @@ borg configuration
 
     00 08 * * * /bin/bash /var/local/backup/backup_script.sh
 
+
 **remote backup**
 
 >borg init ssh://data1see@bckp1t4v.scambi:822/home/data1see/borg -e repokey (see Keepass database)  
@@ -158,3 +159,8 @@ borg configuration
 >crontab -e
 
     30 08 * * * /bin/bash /var/local/backup/dr_script.sh
+    
+**aggiornamenti automatici di baserow**
+>crontab -e
+
+    *  09 * * 6 /bin/bash /usr/bin/docker image pull baserow/baserow:latest
