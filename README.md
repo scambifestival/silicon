@@ -22,16 +22,16 @@ The naming convention for hostnames is as follows:
 - 1 number: incremental
 - 3 letters: supplier abbreviation
 
-| IP TINC      | Hostname | SSH[^1] | Role                  | Public IP |
-| ------------ | -------- | ------- | --------------------- | --------- |
-| 192.168.64.1 | pila1see | 822     | vipien1               |           |
-| 192.168.64.2 | pila2sca | 822     | vipien2               |           |
-| 192.168.64.3 | bckp1t4v | 822     | backup                |           |
-| 192.168.64.4 | lemp1see | 22      | LEMP scambi.org       |           |
-| 192.168.64.5 | stor1see | 22      | storage Nextcloud     |           |
-| 192.168.64.6 | lemp2see | 22      | Nginx Collabora       |           |
-| 192.168.64.7 | data1see | 22      | database Baserow      |           |
-| 192.168.64.8 |          | 22      |                       |           |
+| IP TINC      | Hostname | SSH[^1] | Role                  | Spec
+| ------------ | -------- | ------- | --------------------- |------------------
+| 192.168.64.1 | pila1see | 822     | vipien1               |                 |
+| 192.168.64.2 | pila2sca | 822     | vipien2               |                 |
+| 192.168.64.3 | bckp1t4v | 822     | backup                |                 |
+| 192.168.64.4 | lemp1see | 22      | LEMP scambi.org       |                 |
+| 192.168.64.5 | stor1see | 22      | storage Nextcloud     |                 |
+| 192.168.64.6 | lemp2see | 22      | Nginx Collabora       |                 |
+| 192.168.64.7 | data1see | 22      | database Baserow      |2 Core, 2 Gb RAM | 
+| 192.168.64.8 |          | 22      |                       |                 |
 
 ## Suppliers list
 
