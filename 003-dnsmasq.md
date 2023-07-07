@@ -88,3 +88,6 @@ if the file */etc/resolv.conf* is a symbolic link:
 >nano /etc/resolv.conf
 
     nameserver 127.0.0.1
+
+# Tips
+If you run into problems like that dnsmasq want to use a file under `/run/dnsmasq/resolv.conf` add here the nameservers and then `sudo systemctl stop resolvconf` then restart dnsmasq
