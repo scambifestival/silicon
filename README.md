@@ -32,6 +32,7 @@ The naming convention for hostnames is as follows:
 | 192.168.64.6 | lemp2see | 22      | Nginx Collabora       |                 |
 | 192.168.64.7 | data1see | 22      | database Baserow      |2 vCore, 2GB RAM | 
 | 192.168.64.8 | baserow1het | 22   | Baserow overpowered   |2 vCore, 4GB Ram | 
+|              | pretix1het |       | Pretix (temporary)    |2 vCore, 4GB Ram |
 
 ## Suppliers list
 
